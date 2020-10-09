@@ -89,6 +89,17 @@
             android:textAlignment="textEnd">
         </TextView>
     </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Setup Wizard"
+        android:background="@color/colorAccent"
+        android:textColor="#FFFFFF"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:onClick="startSetUpWizard"/>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
