@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,6 +18,13 @@
         android:name="ca.bcit.beproductiv.DayFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/scheduled_timer_item"
+            />
+
     </fragment>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
