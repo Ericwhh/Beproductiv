@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         tools:context=".AddTimeActivity">
@@ -16,18 +16,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="40dp"
-            android:paddingTop="40dp"
-            android:paddingRight="40dp"
-            android:paddingBottom="40dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Time"
-                android:textSize="24dp" />
+                style="@style/Header"
+                android:text="Add Time" />
         </LinearLayout>
 
         <LinearLayout
@@ -84,126 +80,89 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Repeat" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/sunday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="S"
- />
-
-                <Button
-                    android:id="@+id/monday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"                    android:layout_weight="1"
-                    android:text="M" />
-
-                <Button
-                    android:id="@+id/tuesday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="T" />
-
-                <Button
-                    android:id="@+id/wednesday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="W" />
-
-                <Button
-                    android:id="@+id/thursday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="T" />
-
-                <Button
-                    android:id="@+id/friday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="F" />
-
-                <Button
-                    android:id="@+id/saturday"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="S" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Title" />
-
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint=""
-                android:inputType="textPersonName" />
-
-            <TextView
-                android:id="@+id/colorsText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Color" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="9">
+                android:text="Repeat"/>
 
-                <Button
-                    android:id="@+id/colorOne"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="10dp"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="7">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_red_light"
-                    android:text="" />
-
-                <Button
-                    android:id="@+id/colorTwo"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="10dp"
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="M"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_green_light"
-                    android:text="" />
-
-                <Button
-                    android:id="@+id/colorThree"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="10dp"
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_blue_light"
-                    android:text="" />
-            </LinearLayout>
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="W"
+                    android:layout_weight="1"
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="T"
+                    android:layout_weight="1"
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="F"
+                    android:layout_weight="1"
+                    style="?attr/materialButtonOutlinedStyle" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S"
+                    android:layout_weight="1"
+                    style="?attr/materialButtonOutlinedStyle" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <Button
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Title"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:hintAnimationEnabled="false"
+                app:endIconMode="clear_text"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
