@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddTimeActivity"></activity>
+        <activity android:name=".Settings"></activity>
+        <activity android:name=".ScheduleActivity"></activity>
+        <activity android:name=".SettingsWizardActivity"></activity>
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+        <activity android:name=".AddTimeActivity"></activity>
         <activity android:name=".Settings" />
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".SettingsWizardActivity" />

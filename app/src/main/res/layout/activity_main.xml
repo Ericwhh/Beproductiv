@@ -11,39 +11,79 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Beproductiv"
+        android:text="@string/beproductiv"
         android:layout_gravity="center"
         android:layout_marginTop="80sp"
         android:textColor="@color/colorPrimary"
         android:textSize="40sp"/>
+
 
     <TextView
+        android:id="@+id/timeRemaining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00"
         android:layout_gravity="center"
-        android:layout_marginTop="80sp"
+        android:layout_marginTop="120sp"
         android:layout_marginBottom="20sp"
-        android:textColor="@color/colorPrimary"
-        android:textSize="40sp"/>
+        android:textAppearance="@style/Base.TextAppearance.AppCompat"
+        android:textSize="40sp"
+        tools:text="00:00:00" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="240dp"
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:layout_marginTop="-190dp"
+        android:id="@+id/progress_circular"
+        android:minWidth="300dp"
+        android:minHeight="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="80sp"
-        android:progress="100"
-        android:thumbTint="@android:color/transparent"/>
+        android:indeterminate="false"
+        android:progress="0"
+        android:max="0"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Large"
+        />
 
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:id="@+id/timerButtons"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="#FFFFFF"
-        android:text="Start Now" />
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:text="@string/start_now" />
+        <Button
+            android:id="@+id/resumeButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:text="@string/resume"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:text="@string/pause"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@color/colorDanger"
+            android:textColor="#FFFFFF"
+            android:text="@string/stop"
+            android:visibility="gone"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/scheduleButton"
@@ -52,7 +92,7 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/colorAccent"
         android:textColor="#FFFFFF"
-        android:text="Schedule Later" />
+        android:text="@string/schedule_later" />
 
     <Button
         android:id="@+id/settingsButton"
@@ -61,5 +101,5 @@
         android:layout_gravity="center_horizontal"
         android:backgroundTint="@color/colorAccent"
         android:textColor="#FFFFFF"
-        android:text="Settings" />
+        android:text="@string/settings" />
 </LinearLayout>

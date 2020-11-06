@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="colorDanger">#f44336</color>
+
     <color name="colorPrimary">#00897b</color>
     <color name="colorPrimaryDark">#005b4f</color>
     <color name="colorPrimaryLight">#4ebaaa</color>
@@ -12,4 +15,5 @@
 
     <color name="colorAccent">#9e9e9e</color>
     <color name="colorDivider">#BDBDBD</color>
+
 </resources>
