@@ -1,0 +1,53 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/about_me_header">
+
+        <EditTextPreference
+            app:key="username"
+            app:title="@string/username_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/intervals_header">
+        <ListPreference
+            app:defaultValue="30"
+            app:entries="@array/interval_focus_entries"
+            app:entryValues="@array/interval_focus_values"
+            app:key="interval_focus"
+            app:title="@string/intervals_focus"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="5"
+            app:entries="@array/interval_break_entries"
+            app:entryValues="@array/interval_break_values"
+            app:key="interval_focus"
+            app:title="@string/intervals_break"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="15"
+            app:entries="@array/interval_long_break_entries"
+            app:entryValues="@array/interval_long_break_values"
+            app:key="interval_focus"
+            app:title="@string/intervals_long_break"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/other_header">
+        <ListPreference
+            app:defaultValue="30"
+            app:entries="@array/auto_start_break_entries"
+            app:entryValues="@array/auto_start_break_values"
+            app:key="auto_start_break"
+            app:title="@string/other_auto_start_breaks"
+            app:useSimpleSummaryProvider="true" />
+
+        <SwitchPreference
+            app:defaultValue="true"
+            app:title="@string/other_notifications"
+            app:key="notifications" />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
