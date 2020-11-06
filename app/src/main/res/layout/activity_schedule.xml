@@ -1,52 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ScheduleActivity"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="20dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Beproductiv"
-            android:textColor="@color/colorPrimary"
-            android:textSize="40sp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp">
-        <CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp">
-        <Button
-            android:text="Last Month"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"/>
-        <Button
-            android:text="Next Month"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"/>
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <fragment
+        android:id="@+id/dayFragment"
+        android:name="ca.bcit.beproductiv.DayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/scheduled_timer_item"
+            />
+
+    </fragment>
 
 </LinearLayout>
