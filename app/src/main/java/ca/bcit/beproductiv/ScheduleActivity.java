@@ -38,8 +38,5 @@ public class ScheduleActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        LinearLayout bottomSheet = findViewById(R.id.bottom_sheet);
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 }

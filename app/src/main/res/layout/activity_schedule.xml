@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <include layout="@layout/bottom_sheet"/>
+    <fragment
+        android:id="@+id/dayFragment"
+        android:name="ca.bcit.beproductiv.DayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </fragment>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
