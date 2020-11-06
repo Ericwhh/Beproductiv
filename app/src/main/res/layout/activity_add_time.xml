@@ -66,14 +66,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Start Time"/>
-
+            <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="End Time"/>
-
+            <TimePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner" />
 
             <TextView
                 android:layout_width="wrap_content"
