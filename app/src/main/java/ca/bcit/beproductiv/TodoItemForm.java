@@ -13,8 +13,8 @@ public class TodoItemForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_item_form);
 
-        Button backButton = findViewById(R.id.btnBackFromForm);
-        backButton.setOnClickListener(new View.OnClickListener() {
+        Button saveButton = findViewById(R.id.todo_form_save_button);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
