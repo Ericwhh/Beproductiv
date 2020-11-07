@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.R;
+import ca.bcit.beproductiv.TodoItemForm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,6 +94,15 @@ public class TodoFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         contRecycler.setLayoutManager(lm);
 
+        FloatingActionButton button = root.findViewById(R.id.fab);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), TodoItemForm.class);
+                view.getContext().startActivity(i);
+            }
+        });
+
         return root;
     }
 
@@ -135,6 +147,14 @@ public class TodoFragment extends Fragment {
 
             TextView todoCardDescription = cardView.findViewById(R.id.todo_description);
             todoCardDescription.setText(todoDescriptions[position]);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(cardView.getContext(), TodoItemForm.class);
+                    cardView.getContext().startActivity(i);
+                }
+            });
         }
     }
 }

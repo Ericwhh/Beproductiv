@@ -18,6 +18,7 @@ public class TodoItem {
             new TodoItem("Fight a bear", "Fight a bear next Tuesday together with Albert"),
             new TodoItem("Swim in ocean", "Swim with the fishes"),
             new TodoItem("Get a six pack", "Push enough rocks to get a six pack")
+
     };
 
     public static ArrayList<TodoItem> getDummyData() {
