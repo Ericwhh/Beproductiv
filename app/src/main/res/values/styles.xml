@@ -13,6 +13,16 @@
         <item name="color">@color/onBackgroundText</item>
     </style>
 
+    <style name="PaddingLayout">
+        <item name="android:background">@color/background</item>
+        <item name="color">@color/onBackgroundText</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+
+    </style>
+
     <style name="CardWrapper" parent="Widget.MaterialComponents.CardView">
         <!-- Customize your theme here. -->
         <item name="cardBackgroundColor">@color/surface</item>
@@ -46,5 +56,11 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-
+    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">160dp</item>
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/onBackgroundText</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>
