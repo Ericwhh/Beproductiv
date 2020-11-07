@@ -1,10 +1,49 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
     </style>
+
+    <style name="DefaultLayout">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/background</item>
+        <item name="color">@color/onBackgroundText</item>
+    </style>
+
+    <style name="CardWrapper" parent="Widget.MaterialComponents.CardView">
+        <!-- Customize your theme here. -->
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="color">@color/onBackgroundText</item>
+        <item name="cardCornerRadius">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="rippleColor">@color/surfaceRipple</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="CardLayout" >
+        <!-- Customize your theme here. -->
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="DefaultTextView" parent="Widget.MaterialComponents.TextView">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/onBackgroundText</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="FadedTextView" parent="Widget.MaterialComponents.TextView">
+        <!-- Customize your theme here. -->
+        <item name="android:textColor">@color/onSurfaceText</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="ViewPagerTabText" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
 
 </resources>

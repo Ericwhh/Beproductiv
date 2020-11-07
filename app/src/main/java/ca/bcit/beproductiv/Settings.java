@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Settings extends AppCompatActivity {
 
-    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +18,4 @@ public class Settings extends AppCompatActivity {
 
     }
 
-    public void startSetUpWizard(View view) {
-        Intent intent = new Intent(Settings.this, SettingsWizardActivity.class);
-        startActivity(intent);
-    }
 }

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#222222</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#44A498</color>
+    <color name="primary">#FFB515</color>
+    <color name="secondary">#FFB515</color>
+    <color name="background">#383c5d</color>
+    <color name="surface">#404674</color>
+    <color name="surfaceRipple">#4e558d</color>
+    <color name="onSurfaceText">#8E92AB</color>
+    <color name="onBackgroundText">#ffffff</color>
+
 </resources>
