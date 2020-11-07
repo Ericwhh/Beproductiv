@@ -23,7 +23,6 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/PaddingLayout"
         >
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
