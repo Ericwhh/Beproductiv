@@ -8,6 +8,8 @@
     style="@style/DefaultLayout"
     tools:context=".Tabs.TodoFragment">
 
+    <include layout="@layout/header_divider" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler"
         android:layout_marginTop="20dp"
