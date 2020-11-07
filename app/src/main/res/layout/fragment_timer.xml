@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Tabs.TimerFragment">
 
-    <include layout="@layout/header_divider" />
+    <include layout="@layout/tab_divider" />
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
