@@ -25,8 +25,11 @@
         android:layout_height="match_parent">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="4dp"
+            app:tabPaddingBottom="-12dp"
             app:tabTextColor="@color/onBackgroundText"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicator="@drawable/tab_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabBackground="@color/background"
