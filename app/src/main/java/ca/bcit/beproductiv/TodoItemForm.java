@@ -75,19 +75,18 @@ public class TodoItemForm extends AppCompatActivity {
                 String todoName = etTodoName.getText().toString();
                 String todoDescription = etTodoDescription.getText().toString();
 
-                if (!todoName.trim().isEmpty() && !todoDescription.trim().isEmpty()) {
-                    TodoItem item = new TodoItem(todoName, todoDescription);
-                    if (todoUID == DEFAULT_TODO_UID) {
-                        new AddTodoItemsAsync(getApplicationContext()).execute(item);
-                    } else {
-                        item.setUID(todoUID);
-                        new UpdateTodoItemsAsync(getApplicationContext()).execute(item);
-                    }
-                    finish();
+                if (todoName.trim().isEmpty() || todoDescription.trim().isEmpty()) return;
+
+                TodoItem item = new TodoItem(todoName, todoDescription);
+
+                if (FORM_ACTION == FormAction.Add) {
+                    new AddTodoItemsAsync(getApplicationContext()).execute(item);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Unable to add Todo Item",
-                            Toast.LENGTH_SHORT).show();
+                    item.setUID(todoUID);
+                    new UpdateTodoItemsAsync(getApplicationContext()).execute(item);
                 }
+
+                finish();
             }
         });
 
