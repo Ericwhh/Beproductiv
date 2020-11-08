@@ -37,13 +37,6 @@ public class HomeActivity extends AppCompatActivity {
 
         _database = AppDatabase.getInstance(getApplicationContext());
 
-        TodoItem t1 = new TodoItem("Item 1", "Description 1");
-        TodoItem t2 = new TodoItem("Item 2", "Description 2");
-        TodoItem t3 = new TodoItem("Item 3", "Description 3");
-        TodoItem t4 = new TodoItem("Item 4", "Description 4");
-
-        new AddTodoItemsAsync(getApplicationContext()).execute(t1, t2, t3, t4);
-
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
@@ -58,28 +51,6 @@ public class HomeActivity extends AppCompatActivity {
 //        });
 
 
-    }
-
-    private static class AddTodoItemsAsync extends AsyncTask<TodoItem, Void, Integer> {
-        private final WeakReference<Context> contextRef;
-
-        public AddTodoItemsAsync(Context context) {
-            contextRef = new WeakReference<>(context);
-        }
-
-        @Override
-        protected Integer doInBackground(TodoItem... todoItems) {
-            AppDatabase db = AppDatabase.getInstance(contextRef.get());
-            TodoItemDao dao = db.getTaskDao();
-
-            for (TodoItem item : dao.getAll()) {
-                dao.delete(item);
-            }
-
-            db.getTaskDao().insertAll(todoItems);
-
-            return 0;
-        }
     }
 
     public static class SectionsPageAdapter extends FragmentPagerAdapter {

@@ -27,6 +27,10 @@ public class TodoItem {
         this.isComplete = false;
     }
 
+    public void setUID(int uid) {
+        this.uid = uid;
+    }
+
     public static TodoItem[] dummyItems = {
             new TodoItem("Fight a bear", "Fight a bear next Tuesday together with Albert"),
             new TodoItem("Swim in ocean", "Swim with the fishes"),
