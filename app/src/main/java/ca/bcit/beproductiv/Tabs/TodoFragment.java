@@ -1,12 +1,15 @@
 package ca.bcit.beproductiv.Tabs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -19,8 +22,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
+import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
@@ -78,14 +84,22 @@ public class TodoFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         RecyclerView contRecycler = root.findViewById(R.id.my_recycler);
 
-        ArrayList<TodoItem> dummyItems = TodoItem.getDummyData();
 
-        String[] todoNames = new String[dummyItems.size()];
-        String[] todoDescriptions = new String[dummyItems.size()];
+        ArrayList<TodoItem> myTodoItems;
 
-        for (int i=0; i < dummyItems.size(); i++) {
-            todoNames[i] = dummyItems.get(i).name;
-            todoDescriptions[i] = dummyItems.get(i).description;
+        try {
+            myTodoItems = new GetTodoItemsAsync(getContext()).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            myTodoItems = TodoItem.getDummyData();
+            e.printStackTrace();
+        }
+
+        String[] todoNames = new String[myTodoItems.size()];
+        String[] todoDescriptions = new String[myTodoItems.size()];
+
+        for (int i = 0; i < myTodoItems.size(); i++) {
+            todoNames[i] = myTodoItems.get(i).name;
+            todoDescriptions[i] = myTodoItems.get(i).description;
         }
 
         CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(todoNames, todoDescriptions);
@@ -106,13 +120,27 @@ public class TodoFragment extends Fragment {
         return root;
     }
 
+    static class GetTodoItemsAsync extends AsyncTask<Void, Void, ArrayList<TodoItem>> {
+        private final WeakReference<Context> contextRef;
+
+        public GetTodoItemsAsync(Context context) {
+            contextRef = new WeakReference<>(context);
+        }
+
+        @Override
+        protected ArrayList<TodoItem> doInBackground(Void ...voids) {
+            AppDatabase db = AppDatabase.getInstance(contextRef.get());
+            return new ArrayList<>(db.getTaskDao().getAll());
+        }
+    }
+
     static class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder>
     {
-        private String[] todoNames;
-        private String[] todoDescriptions;
+        private final String[] todoNames;
+        private final String[] todoDescriptions;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private MaterialCardView cardView;
+            private final MaterialCardView cardView;
 
             public ViewHolder(MaterialCardView v) {
                 super(v);
@@ -130,6 +158,7 @@ public class TodoFragment extends Fragment {
             return todoNames.length;
         }
 
+        @NonNull
         @Override
         public CaptionedImagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MaterialCardView cv = (MaterialCardView) LayoutInflater.from(parent.getContext())
