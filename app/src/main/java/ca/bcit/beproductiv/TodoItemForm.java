@@ -39,6 +39,8 @@ public class TodoItemForm extends AppCompatActivity {
     TextInputEditText etTodoName;
     TextInputEditText etTodoDescription;
 
+    TextView tvFormHeading;
+
     public enum FormAction {Add, Edit};
 
     FormAction FORM_ACTION;
@@ -55,14 +57,20 @@ public class TodoItemForm extends AppCompatActivity {
         etTodoName = findViewById(R.id.etTodoName);
         etTodoDescription = findViewById(R.id.etTodoDescription);
 
+        tvFormHeading = findViewById(R.id.todo_form_header);
+
         String formActionString = getIntent().getStringExtra("FORM_ACTION");
         FORM_ACTION = parseFormAction(formActionString);
 
         if (FORM_ACTION == FormAction.Edit) {
+            tvFormHeading.setText("Edit Todo");
+
             todoUID = getIntent().getIntExtra("TODO_UID", DEFAULT_TODO_UID);
             todoName = getIntent().getStringExtra("TODO_NAME");
             todoDescription = getIntent().getStringExtra("TODO_DESCRIPTION");
         } else {
+            tvFormHeading.setText("Add Todo");
+
             btnDeleteTodo.setVisibility(View.GONE);
         }
 
