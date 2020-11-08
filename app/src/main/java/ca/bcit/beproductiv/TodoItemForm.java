@@ -20,7 +20,6 @@ public class TodoItemForm extends AppCompatActivity {
         //String formActionString = getIntent().getStringExtra("FORM_ACTION");
         //FORM_ACTION = parseFormAction(formActionString);
 
-        Button backButton = findViewById(R.id.btnBackFromForm);
         Button saveButton = findViewById(R.id.todo_form_save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
