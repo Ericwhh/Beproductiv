@@ -62,16 +62,9 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/surface"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-
-            app:hintEnabled="false"
+            style="@style/MaterialTextInputLayout"
             android:layout_marginBottom="24dp"
-            android:hint="Name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTodoName"
@@ -92,14 +85,9 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/surface"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
+            style="@style/MaterialTextInputLayout"
             android:layout_marginBottom="24dp"
-            app:hintEnabled="false"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTodoDescription"
