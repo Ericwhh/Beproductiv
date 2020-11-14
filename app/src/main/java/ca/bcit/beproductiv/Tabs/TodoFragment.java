@@ -1,95 +1,85 @@
 package ca.bcit.beproductiv.Tabs;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TodoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TodoFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public TodoFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TodoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TodoFragment newInstance(String param1, String param2) {
-        TodoFragment fragment = new TodoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_todo, container, false);
         RecyclerView contRecycler = root.findViewById(R.id.my_recycler);
 
-        ArrayList<TodoItem> dummyItems = TodoItem.getDummyData();
 
-        String[] todoNames = new String[dummyItems.size()];
-        String[] todoDescriptions = new String[dummyItems.size()];
+        LiveData<List<TodoItem>> myTodoItems;
 
-        for (int i=0; i < dummyItems.size(); i++) {
-            todoNames[i] = dummyItems.get(i).name;
-            todoDescriptions[i] = dummyItems.get(i).description;
+        try {
+            myTodoItems = new GetTodoItemsAsync(getContext()).execute().get();
+        } catch (ExecutionException | InterruptedException e) {
+            myTodoItems = null;
+            e.printStackTrace();
         }
 
-        CaptionedImagesAdapter adapter = new CaptionedImagesAdapter(todoNames, todoDescriptions);
-        contRecycler.setAdapter(adapter);
+        final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>());
+        contRecycler.setAdapter(todoCardsAdapter);
+
+        myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
+            @Override
+            public void onChanged(List<TodoItem> todoItems) {
+                System.out.println("List<TodoItems onChanged");
+                todoCardsAdapter.setTodoItems(todoItems);
+                todoCardsAdapter.notifyDataSetChanged();
+            }
+        });
+
+
 
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         contRecycler.setLayoutManager(lm);
@@ -99,6 +89,7 @@ public class TodoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), TodoItemForm.class);
+                i.putExtra("FORM_ACTION", "ADD");
                 view.getContext().startActivity(i);
             }
         });
@@ -106,13 +97,26 @@ public class TodoFragment extends Fragment {
         return root;
     }
 
-    static class CaptionedImagesAdapter extends RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder>
+    static class GetTodoItemsAsync extends AsyncTask<Void, Void, LiveData<List<TodoItem>>> {
+        private final WeakReference<Context> contextRef;
+
+        public GetTodoItemsAsync(Context context) {
+            contextRef = new WeakReference<>(context);
+        }
+
+        @Override
+        protected LiveData<List<TodoItem>> doInBackground(Void ...voids) {
+            AppDatabase db = AppDatabase.getInstance(contextRef.get());
+            return db.getTaskDao().getAll();
+        }
+    }
+
+    static class TodoCardsAdapter extends RecyclerView.Adapter<TodoCardsAdapter.ViewHolder>
     {
-        private String[] todoNames;
-        private String[] todoDescriptions;
+        private ArrayList<TodoItem> _todoItems;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            private MaterialCardView cardView;
+            private final MaterialCardView cardView;
 
             public ViewHolder(MaterialCardView v) {
                 super(v);
@@ -120,18 +124,22 @@ public class TodoFragment extends Fragment {
             }
         }
 
-        public CaptionedImagesAdapter(String[] todoNames, String[] todoDescriptions) {
-            this.todoNames = todoNames;
-            this.todoDescriptions = todoDescriptions;
+        public TodoCardsAdapter(List<TodoItem> todoItems) {
+            _todoItems = new ArrayList<>(todoItems);
+        }
+
+        public void setTodoItems(List<TodoItem> todoItems) {
+            _todoItems = new ArrayList<>(todoItems);
         }
 
         @Override
         public int getItemCount() {
-            return todoNames.length;
+            return _todoItems.size();
         }
 
+        @NonNull
         @Override
-        public CaptionedImagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TodoCardsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MaterialCardView cv = (MaterialCardView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.fragment_todo_card, parent, false);
 
@@ -143,15 +151,22 @@ public class TodoFragment extends Fragment {
             final MaterialCardView cardView = holder.cardView;
 
             TextView todoCardName = cardView.findViewById(R.id.todo_name);
-            todoCardName.setText(todoNames[position]);
+            todoCardName.setText(_todoItems.get(position).name);
 
             TextView todoCardDescription = cardView.findViewById(R.id.todo_description);
-            todoCardDescription.setText(todoDescriptions[position]);
+            todoCardDescription.setText(_todoItems.get(position).description);
 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(cardView.getContext(), TodoItemForm.class);
+                    i.putExtra("FORM_ACTION", "EDIT");
+
+                    // TODO: Send only uid instead of plaintext name and description
+                    i.putExtra("TODO_UID", _todoItems.get(position).uid);
+                    i.putExtra("TODO_NAME", _todoItems.get(position).name);
+                    i.putExtra("TODO_DESCRIPTION", _todoItems.get(position).description);
+
                     cardView.getContext().startActivity(i);
                 }
             });

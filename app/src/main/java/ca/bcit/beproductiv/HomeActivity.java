@@ -4,24 +4,38 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.github.florent37.materialviewpager.MaterialViewPager;
 
+import java.lang.ref.WeakReference;
+
+import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.TodoItem;
+import ca.bcit.beproductiv.Database.TodoItemDao;
 import ca.bcit.beproductiv.Tabs.TimerFragment;
 import ca.bcit.beproductiv.Tabs.TodoFragment;
 
+
+
 public class HomeActivity extends AppCompatActivity {
-    private MaterialViewPager mViewPager;
+
+    public AppDatabase _database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        _database = AppDatabase.getInstance(getApplicationContext());
 
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.pager);
