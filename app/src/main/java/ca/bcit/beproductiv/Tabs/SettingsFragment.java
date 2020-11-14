@@ -42,7 +42,7 @@ public class SettingsFragment extends Fragment {
             super.onViewCreated(view, savedInstanceState);
 
             final RecyclerView recyclerView = getListView();
-            recyclerView.setPadding(0, 0, 0, 48);
+            recyclerView.setPadding(0, 0, 0, 68); // TODO: change this from hardcoded in java file
         }
     }
 }

@@ -13,6 +13,7 @@
         android:id="@+id/my_recycler"
         style="@style/TabContentWrapper"
         android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:scrollbars="vertical"
         />
 
