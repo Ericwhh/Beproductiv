@@ -15,8 +15,9 @@
         android:text="Beproductiv"
         style="@style/DefaultTextView"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:textStyle="bold"
         android:textSize="25sp"/>
 
     <androidx.viewpager.widget.ViewPager
@@ -33,6 +34,7 @@
             app:tabIndicator="@drawable/tab_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/background"
             app:tabBackground="@color/background"
             app:tabTextAppearance="@style/ViewPagerTabText" />
     </androidx.viewpager.widget.ViewPager>
