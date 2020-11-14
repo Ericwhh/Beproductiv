@@ -67,6 +67,13 @@
         <item name="android:colorBackground">@color/colorPrimary</item>
     </style>
 
+    <style name="IconButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="RoundedCardDefault">
         <item name="android:background">@color/background</item>
         <item name="cornerFamily">rounded</item>
