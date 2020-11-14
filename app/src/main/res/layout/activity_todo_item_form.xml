@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/DefaultLayout"
     android:padding="16dp"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
+    android:background="@color/background"
     tools:context=".TodoItemForm">
 
     <RelativeLayout
@@ -48,7 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        style="@style/PaddingLayout"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         >
 
         <com.google.android.material.textview.MaterialTextView
