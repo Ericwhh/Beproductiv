@@ -5,17 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/DefaultLayout"
     tools:context=".Tabs.TodoFragment">
 
     <include layout="@layout/tab_divider" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        style="@style/TabContentWrapper"
+        android:scrollbars="vertical"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

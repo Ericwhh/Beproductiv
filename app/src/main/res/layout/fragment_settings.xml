@@ -8,10 +8,6 @@
 
     <FrameLayout
         android:id="@+id/settings"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp" />
+        style="@style/TabContentWrapper"
+        />
 </LinearLayout>
