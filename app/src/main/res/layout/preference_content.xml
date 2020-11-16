@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CardLayout"
+    >
+    <TextView
+        android:id="@android:id/title"
+        style="@style/CardHeader"
+        android:singleLine="true"
+        />
+
+    <TextView
+        android:id="@android:id/summary"
+        style="@style/CardSubHeader"
+        android:maxLines="10"
+        android:layout_below="@android:id/title"
+        android:layout_alignStart="@android:id/title"
+        />
+</RelativeLayout>

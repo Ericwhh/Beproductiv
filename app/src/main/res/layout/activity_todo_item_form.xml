@@ -4,27 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/DefaultLayout"
     android:padding="16dp"
     android:orientation="vertical"
     android:focusableInTouchMode="true"
+    android:background="@color/background"
     tools:context=".TodoItemForm">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/todo_form_back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/todo_form_header"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
-            android:background="@android:color/transparent"
+            style="@style/IconButton"
+            android:paddingStart="16dp"
             android:drawableLeft="@drawable/ic_outline_arrow_back_24"
             app:tint="@color/onBackgroundText" />
 
@@ -33,20 +29,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:text="Add Todo"
             style="@style/DefaultTextView"
             android:textSize="25sp"/>
 
         <Button
             android:id="@+id/todo_form_delete_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/IconButton"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/todo_form_header"
-            android:layout_marginEnd="12dp"
-            android:padding="4dp"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/ic_outline_delete_24"
+            android:paddingEnd="16dp"
+            android:drawableEnd="@drawable/ic_outline_delete_24"
             android:drawableTint="#E65E4E" />
     </RelativeLayout>
 
@@ -54,7 +48,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        style="@style/PaddingLayout"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         >
 
         <com.google.android.material.textview.MaterialTextView
@@ -65,16 +62,9 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/surface"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-
-            app:hintEnabled="false"
+            style="@style/MaterialTextInputLayout"
             android:layout_marginBottom="24dp"
-            android:hint="Name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTodoName"
@@ -95,14 +85,9 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/surface"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
+            style="@style/MaterialTextInputLayout"
             android:layout_marginBottom="24dp"
-            app:hintEnabled="false"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTodoDescription"

@@ -8,4 +8,19 @@
     <string name="hello_world">Hello Square World!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- About Me Preferences -->
+    <string name="about_me_header">About Me</string>
+    <string name="username_title">Name</string>
+
+    <!-- Intervals Preferences -->
+    <string name="intervals_header">Intervals</string>
+    <string name="intervals_focus">Focus</string>
+    <string name="intervals_break">Break</string>
+    <string name="intervals_long_break">Long Break</string>
+
+    <!-- Other Preferences -->
+    <string name="other_header">Other</string>
+    <string name="other_auto_start_breaks">Auto-start breaks</string>
+    <string name="other_notifications">Enable notifications</string>
 </resources>

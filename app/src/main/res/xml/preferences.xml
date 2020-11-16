@@ -1,0 +1,68 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/about_me_header"
+        app:iconSpaceReserved="false">
+        <EditTextPreference
+            app:layout="@layout/preference_card_default"
+            app:key="username"
+            app:title="@string/username_title"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/intervals_header"
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false" >
+        <ListPreference
+            app:layout="@layout/preference_card_top"
+            app:defaultValue="30"
+            app:entries="@array/interval_focus_entries"
+            app:entryValues="@array/interval_focus_values"
+            app:key="interval_focus"
+            app:title="@string/intervals_focus"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false"
+            />
+
+        <ListPreference
+            app:layout="@layout/preference_card_middle"
+            app:defaultValue="5"
+            app:entries="@array/interval_break_entries"
+            app:entryValues="@array/interval_break_values"
+            app:key="interval_break"
+            app:title="@string/intervals_break"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            app:layout="@layout/preference_card_bottom"
+            app:defaultValue="15"
+            app:entries="@array/interval_long_break_entries"
+            app:entryValues="@array/interval_long_break_values"
+            app:key="interval_long_break"
+            app:title="@string/intervals_long_break"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/other_header"
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false" >
+        <ListPreference
+            app:layout="@layout/preference_card_top"
+            app:defaultValue="30"
+            app:entries="@array/auto_start_break_entries"
+            app:entryValues="@array/auto_start_break_values"
+            app:key="auto_start_break"
+            app:title="@string/other_auto_start_breaks"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            app:layout="@layout/preference_card_switch_bottom"
+            app:defaultValue="true"
+            app:title="@string/other_notifications"
+            app:key="notifications"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

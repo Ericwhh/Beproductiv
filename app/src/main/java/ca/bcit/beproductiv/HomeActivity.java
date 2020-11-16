@@ -21,6 +21,7 @@ import java.lang.ref.WeakReference;
 import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.Database.TodoItemDao;
+import ca.bcit.beproductiv.Tabs.SettingsFragment;
 import ca.bcit.beproductiv.Tabs.TimerFragment;
 import ca.bcit.beproductiv.Tabs.TodoFragment;
 
@@ -34,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         _database = AppDatabase.getInstance(getApplicationContext());
 
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
@@ -70,6 +70,8 @@ public class HomeActivity extends AppCompatActivity {
                     return new TimerFragment();
                 case 1:
                     return new TodoFragment();
+                case 2:
+                    return new SettingsFragment();
             }
             return null;
         }
@@ -81,6 +83,8 @@ public class HomeActivity extends AppCompatActivity {
                     return "Timer";
                 case 1:
                     return "To-do";
+                case 2:
+                    return "Settings";
             }
             return null;
         }

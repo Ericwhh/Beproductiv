@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="auto_start_break_entries">
+        <item>Immediately</item>
+        <item>Manually</item>
+        <item>Detect Movement</item>
+    </string-array>
+
+    <string-array name="auto_start_break_values">
+        <item>start_immediately</item>
+        <item>start_manually</item>
+        <item>detect_movement</item>
+    </string-array>
+
+    <string-array name="interval_focus_entries">
+        <item>20 min</item>
+        <item>30 min</item>
+        <item>40 min</item>
+    </string-array>
+
+    <string-array name="interval_focus_values">
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+
+    <string-array name="interval_break_entries">
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>15 min</item>
+    </string-array>
+
+    <string-array name="interval_break_values">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
+
+    <string-array name="interval_long_break_entries">
+        <item>10 min</item>
+        <item>15 min</item>
+        <item>20 min</item>
+    </string-array>
+
+    <string-array name="interval_long_break_values">
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+</resources>
