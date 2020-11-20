@@ -137,44 +137,6 @@ public class TimerFragment extends Fragment {
 
     }
 
-    private void updateIntervalCheckMarks(){
-        ImageView intervalStatus1 = root.findViewById(R.id.intervalStatus1);
-        ImageView intervalStatus2 = root.findViewById(R.id.intervalStatus2);
-        ImageView intervalStatus3 = root.findViewById(R.id.intervalStatus3);
-
-        int numCheckMarks = intervalState.getCheckMarks();
-
-        switch(numCheckMarks){
-            case 1:
-                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
-                intervalStatus2.setImageResource(R.drawable.ic_interval_incomplete);
-                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
-                break;
-            case 2:
-                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
-                intervalStatus2.setImageResource(R.drawable.ic_interval_complete);
-                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
-                break;
-            case 3:
-                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
-                intervalStatus2.setImageResource(R.drawable.ic_interval_complete);
-                intervalStatus3.setImageResource(R.drawable.ic_interval_complete);
-                break;
-            default:
-                intervalStatus1.setImageResource(R.drawable.ic_interval_incomplete);
-                intervalStatus2.setImageResource(R.drawable.ic_interval_incomplete);
-                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
-                break;
-        }
-
-    }
-
-    private void updateCircleProgress() {
-        circularProgressBar = root.findViewById(R.id.progress_circular);
-        circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
-        circularProgressBar.setProgress(millisRemaining);
-    }
-
     private void addOnClickHandlers() {
         Button startNowButton = root.findViewById(R.id.startButton);
         startNowButton.setOnClickListener(new View.OnClickListener() {
@@ -217,10 +179,46 @@ public class TimerFragment extends Fragment {
                 updateCircleProgress();
                 updateViewTimeRemaining();
                 updateButtons();
-
-
             }
         });
+    }
+
+    private void updateIntervalCheckMarks(){
+        ImageView intervalStatus1 = root.findViewById(R.id.intervalStatus1);
+        ImageView intervalStatus2 = root.findViewById(R.id.intervalStatus2);
+        ImageView intervalStatus3 = root.findViewById(R.id.intervalStatus3);
+
+        int numCheckMarks = intervalState.getCheckMarks();
+
+        switch(numCheckMarks){
+            case 1:
+                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
+                intervalStatus2.setImageResource(R.drawable.ic_interval_incomplete);
+                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
+                break;
+            case 2:
+                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
+                intervalStatus2.setImageResource(R.drawable.ic_interval_complete);
+                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
+                break;
+            case 3:
+                intervalStatus1.setImageResource(R.drawable.ic_interval_complete);
+                intervalStatus2.setImageResource(R.drawable.ic_interval_complete);
+                intervalStatus3.setImageResource(R.drawable.ic_interval_complete);
+                break;
+            default:
+                intervalStatus1.setImageResource(R.drawable.ic_interval_incomplete);
+                intervalStatus2.setImageResource(R.drawable.ic_interval_incomplete);
+                intervalStatus3.setImageResource(R.drawable.ic_interval_incomplete);
+                break;
+        }
+
+    }
+
+    private void updateCircleProgress() {
+        circularProgressBar = root.findViewById(R.id.progress_circular);
+        circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
+        circularProgressBar.setProgress(millisRemaining);
     }
 
     private void updateButtons(){
