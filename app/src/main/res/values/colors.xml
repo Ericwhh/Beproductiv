@@ -7,4 +7,5 @@
     <color name="surfaceRipple">#254e558d</color>
     <color name="onSurfaceText">#8E92AB</color>
     <color name="onBackgroundText">#ffffff</color>
+    <color name="onPrimary">#000000</color>
 </resources>
