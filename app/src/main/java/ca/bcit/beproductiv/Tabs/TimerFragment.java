@@ -72,30 +72,14 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_timer, container, false);
         if(timerState == TimerState.Stopped) resetTimerValues();
-        setCircleProgress();
-        setTimeRemainingTV();
+        updateCircleProgress();
+        updateViewTimeRemaining();
         startTimer();
-
         addOnClickHandlers();
         updateButtons();
-        setIntervalCheckMarks();
+        updateIntervalCheckMarks();
 
         return root;
-    }
-
-    private void setTimeRemainingTV(){
-        final TextView timeView = root.findViewById(R.id.timeRemaining);
-        if(timerState != TimerState.Completed){
-            long secondsUntilFinished =  millisRemaining / MILIS_IN_A_SECOND;
-            long hours = secondsUntilFinished/SECONDS_IN_AN_HOUR;
-            long minutes = (secondsUntilFinished%SECONDS_IN_AN_HOUR)/SECONDS_IN_A_MIN;
-            long secs = secondsUntilFinished%SECONDS_IN_A_MIN;
-            String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
-            timeView.setText(time);
-        }else {
-            String completed = "Done";
-            timeView.setText(completed);
-        }
     }
 
     private void startTimer(){
@@ -109,7 +93,7 @@ public class TimerFragment extends Fragment {
                 }
                 millisRemaining = millisUntilFinished;
                 circularProgressBar.setProgress((int) millisRemaining);
-                setTimeRemainingTV();
+                updateViewTimeRemaining();
             }
             public void onFinish() {
                 intervalState = intervalState.next();
@@ -118,16 +102,42 @@ public class TimerFragment extends Fragment {
                 }
                 circularProgressBar.setProgress(0);
                 updateButtons();
-                setIntervalCheckMarks();
+                updateIntervalCheckMarks();
                 resetTimerValues();
-                setCircleProgress();
-                setTimeRemainingTV();
+                updateCircleProgress();
+                updateViewTimeRemaining();
                 startTimer();
 
             }
         }.start();
     }
-    private void setIntervalCheckMarks(){
+
+
+    private void setTimerIntervals(){
+        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
+
+        if(timerState == TimerState.Stopped) {
+            retrievedFocusMin = Integer.parseInt(sharedConfig.getString("interval_focus", "30"));
+            retrievedLongBreakMin = Integer.parseInt(sharedConfig.getString("interval_long_break", "15"));
+            retrievedShortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "5"));
+        }
+    }
+
+    private void resetTimerValues(){
+        setTimerIntervals();
+        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+        if(intervalState.isBreak()){
+            if(intervalState == IntervalState.BREAK_ONE){
+                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+            } else {
+                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+            }
+        }
+        millisRemaining = timerTime;
+
+    }
+
+    private void updateIntervalCheckMarks(){
         ImageView intervalStatus1 = root.findViewById(R.id.intervalStatus1);
         ImageView intervalStatus2 = root.findViewById(R.id.intervalStatus2);
         ImageView intervalStatus3 = root.findViewById(R.id.intervalStatus3);
@@ -158,6 +168,13 @@ public class TimerFragment extends Fragment {
         }
 
     }
+
+    private void updateCircleProgress() {
+        circularProgressBar = root.findViewById(R.id.progress_circular);
+        circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
+        circularProgressBar.setProgress(millisRemaining);
+    }
+
     private void addOnClickHandlers() {
         Button startNowButton = root.findViewById(R.id.startButton);
         startNowButton.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +182,7 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 timerState = TimerState.Running;
                 if(intervalState == IntervalState.COMPLETED_ALL) intervalState = intervalState.next();
-                setIntervalCheckMarks();
+                updateIntervalCheckMarks();
                 startTimer();
                 updateButtons();
             }
@@ -195,43 +212,15 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 timerState = TimerState.Stopped;
                 intervalState = IntervalState.INTERVAL_ONE;
-                setIntervalCheckMarks();
+                updateIntervalCheckMarks();
                 resetTimerValues();
-                setCircleProgress();
-                setTimeRemainingTV();
+                updateCircleProgress();
+                updateViewTimeRemaining();
                 updateButtons();
 
 
             }
         });
-    }
-    private void setTimerIntervals(){
-        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
-
-        if(timerState == TimerState.Stopped) {
-            retrievedFocusMin = Integer.parseInt(sharedConfig.getString("interval_focus", "30"));
-            retrievedLongBreakMin = Integer.parseInt(sharedConfig.getString("interval_long_break", "15"));
-            retrievedShortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "5"));
-        }
-    }
-    private void resetTimerValues(){
-        setTimerIntervals();
-        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
-        if(intervalState.isBreak()){
-            if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
-            } else {
-                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
-            }
-        }
-        millisRemaining = timerTime;
-
-    }
-
-    private void setCircleProgress() {
-        circularProgressBar = root.findViewById(R.id.progress_circular);
-        circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
-        circularProgressBar.setProgress(millisRemaining);
     }
 
     private void updateButtons(){
@@ -261,4 +250,19 @@ public class TimerFragment extends Fragment {
             resumeButton.setVisibility(View.GONE);
         }
     };
+
+    private void updateViewTimeRemaining(){
+        final TextView timeView = root.findViewById(R.id.timeRemaining);
+        if(timerState != TimerState.Completed){
+            long secondsUntilFinished =  millisRemaining / MILIS_IN_A_SECOND;
+            long hours = secondsUntilFinished/SECONDS_IN_AN_HOUR;
+            long minutes = (secondsUntilFinished%SECONDS_IN_AN_HOUR)/SECONDS_IN_A_MIN;
+            long secs = secondsUntilFinished%SECONDS_IN_A_MIN;
+            String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
+            timeView.setText(time);
+        }else {
+            String completed = "Done";
+            timeView.setText(completed);
+        }
+    }
 }
