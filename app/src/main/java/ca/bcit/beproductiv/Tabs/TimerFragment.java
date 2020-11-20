@@ -71,9 +71,11 @@ public class TimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_timer, container, false);
-
-        resetTimer();
+        if(timerState == TimerState.Stopped) resetTimerValues();
+        setCircleProgress();
+        setTimeRemainingTV();
         startTimer();
+
         addOnClickHandlers();
         updateButtons();
         setIntervalCheckMarks();
@@ -117,7 +119,9 @@ public class TimerFragment extends Fragment {
                 circularProgressBar.setProgress(0);
                 updateButtons();
                 setIntervalCheckMarks();
-                resetTimer();
+                resetTimerValues();
+                setCircleProgress();
+                setTimeRemainingTV();
                 startTimer();
 
             }
@@ -192,8 +196,8 @@ public class TimerFragment extends Fragment {
                 timerState = TimerState.Stopped;
                 intervalState = IntervalState.INTERVAL_ONE;
                 setIntervalCheckMarks();
-                resetTimer();
-                circularProgressBar.setProgress(timerTime);
+                resetTimerValues();
+                setCircleProgress();
                 setTimeRemainingTV();
                 updateButtons();
 
@@ -210,7 +214,7 @@ public class TimerFragment extends Fragment {
             retrievedShortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "5"));
         }
     }
-    private void resetTimer(){
+    private void resetTimerValues(){
         setTimerIntervals();
         timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
         if(intervalState.isBreak()){
@@ -221,11 +225,13 @@ public class TimerFragment extends Fragment {
             }
         }
         millisRemaining = timerTime;
+
+    }
+
+    private void setCircleProgress() {
         circularProgressBar = root.findViewById(R.id.progress_circular);
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
         circularProgressBar.setProgress(millisRemaining);
-        setTimeRemainingTV();
-
     }
 
     private void updateButtons(){
