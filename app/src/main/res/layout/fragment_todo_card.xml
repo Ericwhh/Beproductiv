@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
-                android:id="@+id/ivExpandCollapse"
+                android:id="@+id/imageViewExpandCollapse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -58,11 +58,11 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="16dp"
-                    android:backgroundTint="#FFB74D"
+                    android:backgroundTint="@color/primary"
                     android:textAllCaps="true"
                     app:cornerRadius="10dp"
                     android:textFontWeight="600"
-                    android:text="Start timer" />
+                    android:text="@string/label_start_timer" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEditItem"
@@ -72,7 +72,6 @@
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_baseline_edit_24"
                     app:iconGravity="textStart"
-                    app:rippleColor="#25FFFFFF"
                     app:iconPadding="0dp"
                     app:iconTint="@color/onBackgroundText" />
             </LinearLayout>

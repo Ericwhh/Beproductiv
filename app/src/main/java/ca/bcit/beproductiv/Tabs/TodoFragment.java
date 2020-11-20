@@ -134,7 +134,7 @@ public class TodoFragment extends Fragment {
             private final TextView todoCardName;
             private final TextView todoCardDescription;
             private final MaterialButton btnContextMenu;
-            private final ImageView ivExpandCollapse;
+            private final ImageView imageViewExpandCollapse;
 
             public ViewHolder(MaterialCardView v) {
                 super(v);
@@ -145,7 +145,7 @@ public class TodoFragment extends Fragment {
                 todoCardName = cardView.findViewById(R.id.todo_name);
                 todoCardDescription = cardView.findViewById(R.id.todo_description);
                 btnContextMenu = cardView.findViewById(R.id.btnEditItem);
-                ivExpandCollapse = cardView.findViewById(R.id.ivExpandCollapse);
+                imageViewExpandCollapse = cardView.findViewById(R.id.imageViewExpandCollapse);
             }
         }
 
@@ -193,7 +193,7 @@ public class TodoFragment extends Fragment {
                 expandCollapseIcon = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_expand_more_24);
             }
 
-            holder.ivExpandCollapse.setImageDrawable(expandCollapseIcon);
+            holder.imageViewExpandCollapse.setImageDrawable(expandCollapseIcon);
 
             holder.btnContextMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
