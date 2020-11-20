@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#FFB515</color>
+    <color name="primary">#FFB74D</color>
     <color name="secondary">#FFB515</color>
     <color name="background">#383c5d</color>
     <color name="surface">#404674</color>
     <color name="surfaceRipple">#254e558d</color>
     <color name="onSurfaceText">#8E92AB</color>
     <color name="onBackgroundText">#ffffff</color>
-    <color name="onPrimaryText">#111</color>
+
+    <color name="onPrimary">#000000</color>
 </resources>
