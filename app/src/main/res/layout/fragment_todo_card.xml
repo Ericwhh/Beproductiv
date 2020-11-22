@@ -55,6 +55,7 @@
                 android:orientation="horizontal">
                 <com.google.android.material.button.MaterialButton
                     style="@style/ButtonPrimary"
+                    android:id="@+id/btnStartTimer"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="16dp"

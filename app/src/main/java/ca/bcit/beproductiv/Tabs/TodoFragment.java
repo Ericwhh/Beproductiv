@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.Async.RemoveTodoItemsAsync;
+import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
@@ -135,6 +137,7 @@ public class TodoFragment extends Fragment {
             private final TextView todoCardDescription;
             private final MaterialButton btnContextMenu;
             private final ImageView imageViewExpandCollapse;
+            private final MaterialButton btnStartTimer;
 
             public ViewHolder(MaterialCardView v) {
                 super(v);
@@ -146,6 +149,7 @@ public class TodoFragment extends Fragment {
                 todoCardDescription = cardView.findViewById(R.id.todo_description);
                 btnContextMenu = cardView.findViewById(R.id.btnEditItem);
                 imageViewExpandCollapse = cardView.findViewById(R.id.imageViewExpandCollapse);
+                btnStartTimer = cardView.findViewById(R.id.btnStartTimer);
             }
         }
 
@@ -218,6 +222,15 @@ public class TodoFragment extends Fragment {
                     notifyDataSetChanged();
                 }
             });
+
+            holder.btnStartTimer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    new SetTimerTodoAsync(holder.cardView.getContext()).execute(_todoItems.get(position).uid);
+                }
+            });
+
+
         }
     }
 }

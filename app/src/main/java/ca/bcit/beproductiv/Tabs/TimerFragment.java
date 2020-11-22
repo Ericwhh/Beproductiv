@@ -1,13 +1,20 @@
 package ca.bcit.beproductiv.Tabs;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
@@ -22,6 +30,9 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
+import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.TimerData;
+import ca.bcit.beproductiv.Database.TimerDataDao;
 import ca.bcit.beproductiv.IntervalState;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TimerState;
@@ -40,6 +51,11 @@ public class TimerFragment extends Fragment {
     private static final int SECONDS_IN_A_MIN = 60;
     private static final int SECONDS_IN_AN_HOUR = 3600;
     private static final double MagicTimerRatio = 4.0/3;
+
+    private String timeViewText;
+    private TextView timeView;
+
+    private AppDatabase appDatabase;
 
     private View root;
     public TimerFragment() {
@@ -64,6 +80,7 @@ public class TimerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intervalState = IntervalState.INTERVAL_ONE;
+        appDatabase = AppDatabase.getInstance(getContext());
     }
 
     @Override
@@ -71,6 +88,8 @@ public class TimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_timer, container, false);
+        timeView = root.findViewById(R.id.timeRemaining);
+
         if(timerState == TimerState.Stopped) resetTimerValues();
         updateCircleProgress();
         updateViewTimeRemaining();
@@ -79,21 +98,37 @@ public class TimerFragment extends Fragment {
         updateButtons();
         updateIntervalCheckMarks();
 
+        TimerDataDao timerDataDao = appDatabase.getTimerDataDao();
+        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                System.out.println("Todo updated...");
+                System.out.println(integer);
+            }
+        });
+
         return root;
     }
 
     private void startTimer(){
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
 
-        new CountDownTimer(millisRemaining, 10) {
+        new CountDownTimer(millisRemaining, 50) {
+            double prevMillisRemaining = Double.MAX_VALUE;
             public void onTick(long millisUntilFinished) {
                 if(timerState != TimerState.Running) {
                     cancel();
                     return;
                 }
+
                 millisRemaining = millisUntilFinished;
+                if (prevMillisRemaining - millisRemaining > 500) {
+                    updateViewTimeRemaining();
+                    prevMillisRemaining = millisRemaining;
+                }
+
                 circularProgressBar.setProgress((int) millisRemaining);
-                updateViewTimeRemaining();
+
             }
             public void onFinish() {
                 intervalState = intervalState.next();
@@ -111,7 +146,6 @@ public class TimerFragment extends Fragment {
             }
         }.start();
     }
-
 
     private void setTimerIntervals(){
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
@@ -249,8 +283,7 @@ public class TimerFragment extends Fragment {
         }
     };
 
-    private void updateViewTimeRemaining(){
-        final TextView timeView = root.findViewById(R.id.timeRemaining);
+    private void updateViewTimeRemaining() {
         if(timerState != TimerState.Completed){
             long secondsUntilFinished =  millisRemaining / MILIS_IN_A_SECOND;
             long hours = secondsUntilFinished/SECONDS_IN_AN_HOUR;
