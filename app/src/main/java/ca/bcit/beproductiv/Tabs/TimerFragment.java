@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
 import ca.bcit.beproductiv.IntervalState;
+import ca.bcit.beproductiv.TimerNotification;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TimerState;
 
@@ -96,6 +97,8 @@ public class TimerFragment extends Fragment {
                 updateViewTimeRemaining();
             }
             public void onFinish() {
+                triggerNotification();
+
                 intervalState = intervalState.next();
                 if(intervalState == IntervalState.COMPLETED_ALL){
                     timerState = TimerState.Completed;
@@ -106,8 +109,28 @@ public class TimerFragment extends Fragment {
                 resetTimerValues();
                 updateCircleProgress();
                 updateViewTimeRemaining();
+
                 startTimer();
 
+            }
+
+            private void triggerNotification() {
+                switch(intervalState) {
+                    case INTERVAL_ONE:
+                        TimerNotification.notifyShortBreak(getActivity());
+                        break;
+                    case INTERVAL_TWO:
+                        TimerNotification.notifyLongBreak(getActivity());
+                        break;
+                    case BREAK_ONE:
+                    case BREAK_TWO:
+                        TimerNotification.notifyIntervalStart(getActivity());
+                        break;
+                    case COMPLETED_ALL:
+                    default:
+                        TimerNotification.notifyComplete(getActivity());
+                        break;
+                }
             }
         }.start();
     }
@@ -247,7 +270,7 @@ public class TimerFragment extends Fragment {
             startNowButton.setVisibility(View.VISIBLE);
             resumeButton.setVisibility(View.GONE);
         }
-    };
+    }
 
     private void updateViewTimeRemaining(){
         final TextView timeView = root.findViewById(R.id.timeRemaining);
