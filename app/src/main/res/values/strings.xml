@@ -23,5 +23,11 @@
     <string name="other_header">Other</string>
     <string name="other_auto_start_breaks">Auto-start breaks</string>
     <string name="other_notifications">Enable notifications</string>
+
+    <string name="start">Start</string>
+    <string name="resume">Resume</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+
     <string name="label_start_timer">Start timer</string>
 </resources>

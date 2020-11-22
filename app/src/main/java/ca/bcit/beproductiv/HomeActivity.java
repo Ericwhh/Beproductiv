@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -40,6 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
+
 
 //        Button settingsButton = findViewById(R.id.settingsButton);
 //        settingsButton.setOnClickListener(new View.OnClickListener() {
