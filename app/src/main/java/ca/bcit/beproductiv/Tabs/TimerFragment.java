@@ -98,20 +98,24 @@ public class TimerFragment extends Fragment {
             }
             public void onFinish() {
                 triggerNotification();
-
+                SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
                 intervalState = intervalState.next();
+                if (autoStartInterval.equals("start_manually")) {
+                    timerState = TimerState.Paused;
+                }
                 if(intervalState == IntervalState.COMPLETED_ALL){
                     timerState = TimerState.Completed;
                 }
-                circularProgressBar.setProgress(0);
                 updateButtons();
                 updateIntervalCheckMarks();
                 resetTimerValues();
                 updateCircleProgress();
                 updateViewTimeRemaining();
 
-                startTimer();
-
+                if (autoStartInterval.equals("start_immediately")) {
+                    startTimer();
+                }
             }
 
             private void triggerNotification() {

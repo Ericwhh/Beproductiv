@@ -21,7 +21,7 @@
 
     <!-- Other Preferences -->
     <string name="other_header">Other</string>
-    <string name="other_auto_start_breaks">Auto-start breaks</string>
+    <string name="other_auto_start_intervals">Auto-start intervals</string>
     <string name="other_notifications">Enable notifications</string>
 
     <string name="start">Start</string>
