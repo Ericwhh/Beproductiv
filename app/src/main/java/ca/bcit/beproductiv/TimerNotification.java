@@ -5,9 +5,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 public class TimerNotification {
     private enum NotificationID {
@@ -31,6 +33,9 @@ public class TimerNotification {
     }
 
     private static void init_notification(Activity context, String title, String text, int ID) {
+        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!sharedConfig.getBoolean("notifications", false)) { return; }
+
         Intent intent = new Intent(context, HomeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
