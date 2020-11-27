@@ -31,7 +31,7 @@ public class TimerNotification {
                 break;
             case LONG_BREAK:
                 text = autoStartInterval.equals("start_manually") ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
-                init_notification(context, "Long Break", "Your " + longBreakMin + "min break is starting!", 2);
+                init_notification(context, "Long Break", text, 2);
                 break;
             case INTERVAL:
                 text = autoStartInterval.equals("start_manually") ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
