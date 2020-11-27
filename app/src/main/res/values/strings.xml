@@ -29,5 +29,6 @@
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
 
-    <string name="label_start_timer">Start timer</string>
+    <string name="label_select_task">Select Task</string>
+    <string name="choose_a_task">Choose a task</string>
 </resources>

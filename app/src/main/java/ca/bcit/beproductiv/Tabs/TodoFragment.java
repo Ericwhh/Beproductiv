@@ -1,6 +1,7 @@
 package ca.bcit.beproductiv.Tabs;
 
 import android.app.Application;
+import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.Fade;
 import androidx.transition.TransitionManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,11 +51,11 @@ import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.Async.RemoveTodoItemsAsync;
 import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
 import ca.bcit.beproductiv.Database.TodoItem;
+import ca.bcit.beproductiv.HomeActivity;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
 
 public class TodoFragment extends Fragment {
-
     public TodoFragment() {
         // Required empty public constructor
     }
@@ -71,14 +73,19 @@ public class TodoFragment extends Fragment {
         RecyclerView contRecycler = root.findViewById(R.id.my_recycler);
         LiveData<List<TodoItem>> myTodoItems;
 
+        ViewPager viewPager = getActivity().findViewById(R.id.pager);
+
         try {
             myTodoItems = new GetTodoItemsAsync(getContext()).execute().get();
         } catch (ExecutionException | InterruptedException e) {
             myTodoItems = null;
             e.printStackTrace();
         }
-
-        final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>(), contRecycler);
+        ViewPager pager = root.findViewById(R.id.pager);
+        if(pager != null){
+            pager.setCurrentItem(0);
+        }
+        final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>(), contRecycler, viewPager);
         contRecycler.setAdapter(todoCardsAdapter);
 
         myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
@@ -126,7 +133,8 @@ public class TodoFragment extends Fragment {
     {
         private ArrayList<TodoItem> _todoItems;
         private int _expandedPosition;
-        private RecyclerView _rootRecyclerView;
+        private final RecyclerView _rootRecyclerView;
+        private ViewPager _viewPager;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             private final MaterialCardView cardView;
@@ -153,10 +161,11 @@ public class TodoFragment extends Fragment {
             }
         }
 
-        public TodoCardsAdapter(List<TodoItem> todoItems, RecyclerView recyclerView) {
+        public TodoCardsAdapter(List<TodoItem> todoItems, RecyclerView recyclerView, ViewPager viewPager) {
             _todoItems = new ArrayList<>(todoItems);
             _expandedPosition = -1;
             _rootRecyclerView = recyclerView;
+            _viewPager = viewPager;
         }
 
         public void setTodoItems(List<TodoItem> todoItems) {
@@ -227,6 +236,7 @@ public class TodoFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     new SetTimerTodoAsync(holder.cardView.getContext()).execute(_todoItems.get(position).uid);
+                    _viewPager.setCurrentItem(0);
                 }
             });
 

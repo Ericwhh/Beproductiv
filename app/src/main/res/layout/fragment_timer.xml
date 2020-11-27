@@ -23,19 +23,63 @@
             app:shapeAppearance="@style/RoundedCorners">
             <LinearLayout
                 style="@style/CardLayout"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="72dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
                 <TextView
-                    android:id="@+id/todo_name"
-                    style="@style/CardHeader"
-                    android:text="Hello"
-                    tool:text="Hello" />
-                <TextView
-                    android:id="@+id/todo_description"
-                    android:text="World\nWorld"
-                    style="@style/CardSubHeader"
-                    tool:text="World\nWorld" />
+                    android:id="@+id/selectATask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_a_task"
+                    android:textSize="18sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/selectedTaskLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/CardLayout"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/todo_name"
+                        style="@style/CardHeader"
+                        android:text="Hello"
+                        tool:text="Hello" />
+                    <TextView
+                        android:id="@+id/todo_description"
+                        android:text="World\nWorld"
+                        style="@style/CardSubHeader"
+                        tool:text="World\nWorld" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRemoveSelectedTask"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_baseline_close_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/transparentWhite" />
+
+
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
 
 
         <com.google.android.material.card.MaterialCardView

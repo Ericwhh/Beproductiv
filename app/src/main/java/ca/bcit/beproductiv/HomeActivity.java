@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
-
     public static class SectionsPageAdapter extends FragmentPagerAdapter {
         public SectionsPageAdapter(FragmentManager fm) {
             super(fm);
