@@ -31,29 +31,28 @@ public class TimerNotification {
 
     public static void send_notification(Activity context, TimerNotification.NotificationType notificationType) {
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
-        int focusSeconds = Integer.parseInt(sharedConfig.getString("interval_focus", "1200"));
-        int longBreakSeconds = Integer.parseInt(sharedConfig.getString("interval_long_break", "900"));
-        int shortBreakSeconds = Integer.parseInt(sharedConfig.getString("interval_break", "300"));
+        int focusMin = Integer.parseInt(sharedConfig.getString("interval_focus", "1200")) / 60;
+        int longBreakMin = Integer.parseInt(sharedConfig.getString("interval_long_break", "900")) / 60;
+        int shortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "300")) / 60;
         String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
 
-        String timeText;
         String text;
         boolean isManual = autoStartInterval.equals("start_manually");
 
         switch(notificationType) {
             case SHORT_BREAK:
-                timeText = TimerFragment.timeToHumanReadableString(shortBreakSeconds * 1000);
-                text = isManual ? "It's time to start your " + timeText + " min break!" : "Your " + timeText + " min break is starting!";
+                shortBreakMin = shortBreakMin == 0 ? 1 : shortBreakMin;
+                text = isManual ? "It's time to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
                 init_notification(context, "Short Break", text, notificationType);
                 break;
             case LONG_BREAK:
-                timeText = TimerFragment.timeToHumanReadableString(longBreakSeconds * 1000);
-                text = isManual ? "It's time to start your " +  timeText + " min break!" : "Your " +  timeText + " min break is starting!";
+                longBreakMin = longBreakMin == 0 ? 1 : longBreakMin;
+                text = isManual ? "It's time to start your " +  longBreakMin + " min break!" : "Your " +  longBreakMin + " min break is starting!";
                 init_notification(context, "Long Break", text, notificationType);
                 break;
             case INTERVAL:
-                timeText = TimerFragment.timeToHumanReadableString(focusSeconds * 1000);
-                text = isManual ? "It's time to start being productive for " +  timeText + " min!" : "Your " +  timeText + " min productivity period is starting!";
+                focusMin = focusMin == 0 ? 1 : focusMin;
+                text = isManual ? "It's time to start being productive for about " +  focusMin + " min!" : "Your " +  focusMin + " min productivity period is starting!";
                 init_notification(context, "Be Productive", text, notificationType);
                 break;
             case COMPLETE:
