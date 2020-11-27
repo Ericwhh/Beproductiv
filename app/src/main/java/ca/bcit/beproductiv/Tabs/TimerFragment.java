@@ -73,13 +73,21 @@ public class TimerFragment extends Fragment {
     private MaterialButton removeSelectedTaskButton;
     private TextView selectAClassText;
     private ViewPager viewPager;
-    private AppDatabase appDatabase;
-    private View root;
 
+    private AppDatabase appDatabase;
+
+    private View root;
     public TimerFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment TimerFragment.
+     */
+    // TODO: Rename and change types and number of parameters
     public static TimerFragment newInstance() {
         TimerFragment fragment = new TimerFragment();
         Bundle args = new Bundle();
@@ -119,6 +127,7 @@ public class TimerFragment extends Fragment {
         return root;
     }
 
+
     private void startTimer(){
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
 
@@ -137,8 +146,8 @@ public class TimerFragment extends Fragment {
                 }
 
                 circularProgressBar.setProgress((int) millisRemaining);
-            }
 
+            }
             public void onFinish() {
                 SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
                 String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
@@ -194,12 +203,12 @@ public class TimerFragment extends Fragment {
 
     private void resetTimerValues(){
         setTimerIntervals();
-        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
-        if(intervalState.isBreak()) {
+        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND;
+        if(intervalState.isBreak()){
             if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND;
             } else {
-                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND;
             }
         }
         millisRemaining = timerTime;
@@ -211,8 +220,8 @@ public class TimerFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 AppDatabase db = AppDatabase.getInstance(getContext());
-                TodoItem selectedTask = db.getTaskDao().findByUID(integer);
-                if(integer != -1 && selectedTask != null) {
+                if(integer != -1){
+                    TodoItem selectedTask = db.getTaskDao().findByUID(integer);
                     System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
                     selectedTaskName.setText(selectedTask.name);
                     selectedTaskDesc.setText(selectedTask.description);
@@ -228,7 +237,9 @@ public class TimerFragment extends Fragment {
                             viewPager.setCurrentItem(1);
                         }
                     });
+
                 }
+
             }
         });
         removeSelectedTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +260,6 @@ public class TimerFragment extends Fragment {
                 updateIntervalCheckMarks();
                 startTimer();
                 updateButtons();
-
             }
         });
         Button pauseButton = root.findViewById(R.id.pauseButton);
@@ -320,8 +330,7 @@ public class TimerFragment extends Fragment {
 
     private void updateCircleProgress() {
         circularProgressBar = root.findViewById(R.id.progress_circular);
-        circularProgressBar.setProgress(0);
-        circularProgressBar.setProgressMax((int)((timerTime * MagicTimerRatio)));
+        circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
         circularProgressBar.setProgress(millisRemaining);
     }
 
