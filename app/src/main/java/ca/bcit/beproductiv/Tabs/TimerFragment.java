@@ -122,44 +122,11 @@ public class TimerFragment extends Fragment {
         addOnClickHandlers();
         updateButtons();
         updateIntervalCheckMarks();
-
-        final TimerDataDao timerDataDao = appDatabase.getTimerDataDao();
-        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                AppDatabase db = AppDatabase.getInstance(getContext());
-                if(integer != -1){
-                    TodoItem selectedTask = db.getTaskDao().findByUID(integer);
-                    System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
-                    selectedTaskName.setText(selectedTask.name);
-                    selectedTaskDesc.setText(selectedTask.description);
-                    selectedTaskCardView.setOnClickListener(null);
-                    selectAClassText.setVisibility(View.GONE);
-                    selectedTaskLayout.setVisibility(View.VISIBLE);
-                } else {
-                    selectedTaskLayout.setVisibility(View.GONE);
-                    selectAClassText.setVisibility(View.VISIBLE);
-                    selectedTaskCardView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            viewPager.setCurrentItem(1);
-                        }
-                    });
-
-                }
-
-            }
-        });
-        removeSelectedTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timerDataDao.setTodoItemUID(-1);
-            }
-        });
-
-
+        setUpSelectedTaskHandlers();
         return root;
     }
+
+
 
 
     private void startTimer(){
@@ -221,6 +188,41 @@ public class TimerFragment extends Fragment {
         }
         millisRemaining = timerTime;
 
+    }
+    private void setUpSelectedTaskHandlers() {
+        final TimerDataDao timerDataDao = appDatabase.getTimerDataDao();
+        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                AppDatabase db = AppDatabase.getInstance(getContext());
+                if(integer != -1){
+                    TodoItem selectedTask = db.getTaskDao().findByUID(integer);
+                    System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
+                    selectedTaskName.setText(selectedTask.name);
+                    selectedTaskDesc.setText(selectedTask.description);
+                    selectedTaskCardView.setOnClickListener(null);
+                    selectAClassText.setVisibility(View.GONE);
+                    selectedTaskLayout.setVisibility(View.VISIBLE);
+                } else {
+                    selectedTaskLayout.setVisibility(View.GONE);
+                    selectAClassText.setVisibility(View.VISIBLE);
+                    selectedTaskCardView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewPager.setCurrentItem(1);
+                        }
+                    });
+
+                }
+
+            }
+        });
+        removeSelectedTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timerDataDao.setTodoItemUID(-1);
+            }
+        });
     }
 
     private void addOnClickHandlers() {
