@@ -128,8 +128,6 @@ public class TimerFragment extends Fragment {
     }
 
 
-
-
     private void startTimer(){
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
 
@@ -205,12 +203,12 @@ public class TimerFragment extends Fragment {
 
     private void resetTimerValues(){
         setTimerIntervals();
-        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND;
         if(intervalState.isBreak()){
             if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND;
             } else {
-                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND;
             }
         }
         millisRemaining = timerTime;
