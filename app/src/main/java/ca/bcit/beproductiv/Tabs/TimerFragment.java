@@ -194,12 +194,12 @@ public class TimerFragment extends Fragment {
 
     private void resetTimerValues(){
         setTimerIntervals();
-        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND;
         if(intervalState.isBreak()) {
             if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND;
             } else {
-                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND * SECONDS_IN_A_MIN;
+                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND;
             }
         }
         millisRemaining = timerTime;
@@ -325,22 +325,22 @@ public class TimerFragment extends Fragment {
         circularProgressBar.setProgress(millisRemaining);
     }
 
-    private void updateButtons(){
+    private void updateButtons() {
         Button startNowButton = root.findViewById(R.id.startButton);
         Button pauseButton = root.findViewById(R.id.pauseButton);
         Button stopButton = root.findViewById(R.id.stopButton);
         Button resumeButton = root.findViewById(R.id.resumeButton);
-        if(timerState == TimerState.Running){
+        if (timerState == TimerState.Running) {
             stopButton.setVisibility(View.VISIBLE);
             pauseButton.setVisibility(View.VISIBLE);
             startNowButton.setVisibility(View.GONE);
             resumeButton.setVisibility(View.GONE);
-        } else if(timerState == TimerState.Paused){
+        } else if (timerState == TimerState.Paused) {
             stopButton.setVisibility(View.VISIBLE);
             pauseButton.setVisibility(View.GONE);
             startNowButton.setVisibility(View.GONE);
             resumeButton.setVisibility(View.VISIBLE);
-        } else if(timerState == TimerState.Stopped){
+        } else if (timerState == TimerState.Stopped) {
             stopButton.setVisibility(View.GONE);
             pauseButton.setVisibility(View.GONE);
             startNowButton.setVisibility(View.VISIBLE);
@@ -355,15 +355,20 @@ public class TimerFragment extends Fragment {
 
     private void updateViewTimeRemaining() {
         if(timerState != TimerState.Completed){
-            long secondsUntilFinished =  millisRemaining / MILIS_IN_A_SECOND;
-            long hours = secondsUntilFinished/SECONDS_IN_AN_HOUR;
-            long minutes = (secondsUntilFinished%SECONDS_IN_AN_HOUR)/SECONDS_IN_A_MIN;
-            long secs = secondsUntilFinished%SECONDS_IN_A_MIN;
-            String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
+            String time = timeToHumanReadableString(millisRemaining);
             timeView.setText(time);
         }else {
             String completed = "Done";
             timeView.setText(completed);
         }
+    }
+
+    public static String timeToHumanReadableString(long milliseconds) {
+        long secondsUntilFinished =  milliseconds / MILIS_IN_A_SECOND;
+        long hours = secondsUntilFinished / SECONDS_IN_AN_HOUR;
+        long minutes = (secondsUntilFinished % SECONDS_IN_AN_HOUR) / SECONDS_IN_A_MIN;
+        long secs = secondsUntilFinished % SECONDS_IN_A_MIN;
+        String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
+        return time;
     }
 }
