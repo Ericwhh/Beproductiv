@@ -26,15 +26,15 @@ public class TimerNotification {
         String text;
         switch(notificationType) {
             case SHORT_BREAK:
-                text = autoStartInterval.equals("start_manually") ? "Click to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
+                text = autoStartInterval.equals("start_manually") ? "It's time to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
                 init_notification(context, "Short Break", text, 1);
                 break;
             case LONG_BREAK:
-                text = autoStartInterval.equals("start_manually") ? "Click to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
+                text = autoStartInterval.equals("start_manually") ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
                 init_notification(context, "Long Break", "Your " + longBreakMin + "min break is starting!", 2);
                 break;
             case INTERVAL:
-                text = autoStartInterval.equals("start_manually") ? "Click to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
+                text = autoStartInterval.equals("start_manually") ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
                 init_notification(context, "Be Productive", text, 3);
                 break;
             case COMPLETE:
