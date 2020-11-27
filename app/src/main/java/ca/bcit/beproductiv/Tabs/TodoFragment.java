@@ -73,7 +73,7 @@ public class TodoFragment extends Fragment {
         RecyclerView contRecycler = root.findViewById(R.id.my_recycler);
         LiveData<List<TodoItem>> myTodoItems;
 
-        ViewPager viewPager = getActivity().findViewById(R.id.pager);
+
 
         try {
             myTodoItems = new GetTodoItemsAsync(getContext()).execute().get();
@@ -81,17 +81,14 @@ public class TodoFragment extends Fragment {
             myTodoItems = null;
             e.printStackTrace();
         }
-        ViewPager pager = root.findViewById(R.id.pager);
-        if(pager != null){
-            pager.setCurrentItem(0);
-        }
+
+        ViewPager viewPager = getActivity().findViewById(R.id.pager);
         final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>(), contRecycler, viewPager);
         contRecycler.setAdapter(todoCardsAdapter);
 
         myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
             @Override
             public void onChanged(List<TodoItem> todoItems) {
-                System.out.println("List<TodoItems onChanged");
                 todoCardsAdapter.setTodoItems(todoItems);
                 todoCardsAdapter.notifyDataSetChanged();
             }
@@ -134,7 +131,7 @@ public class TodoFragment extends Fragment {
         private ArrayList<TodoItem> _todoItems;
         private int _expandedPosition;
         private final RecyclerView _rootRecyclerView;
-        private ViewPager _viewPager;
+        private final ViewPager _viewPager;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
             private final MaterialCardView cardView;
