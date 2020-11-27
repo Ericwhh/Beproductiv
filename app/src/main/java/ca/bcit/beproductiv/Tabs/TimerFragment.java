@@ -97,9 +97,9 @@ public class TimerFragment extends Fragment {
                 updateViewTimeRemaining();
             }
             public void onFinish() {
-                triggerNotification();
                 SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
                 String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
+                triggerNotification();
                 intervalState = intervalState.next();
                 if (autoStartInterval.equals("start_manually")) {
                     timerState = TimerState.Paused;
@@ -121,18 +121,18 @@ public class TimerFragment extends Fragment {
             private void triggerNotification() {
                 switch(intervalState) {
                     case INTERVAL_ONE:
-                        TimerNotification.notifyShortBreak(getActivity());
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.SHORT_BREAK);
                         break;
                     case INTERVAL_TWO:
-                        TimerNotification.notifyLongBreak(getActivity());
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.LONG_BREAK);
                         break;
                     case BREAK_ONE:
                     case BREAK_TWO:
-                        TimerNotification.notifyIntervalStart(getActivity());
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.INTERVAL);
                         break;
                     case COMPLETED_ALL:
                     default:
-                        TimerNotification.notifyComplete(getActivity());
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.COMPLETE);
                         break;
                 }
             }

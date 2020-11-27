@@ -12,24 +12,37 @@ import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
 public class TimerNotification {
-    private enum NotificationID {
-        SHORT_BREAK, LONG_BREAK, INTERVAL_START, COMPLETE
+    public enum NotificationType {
+        SHORT_BREAK, LONG_BREAK, INTERVAL, COMPLETE
     }
 
-    public static void notifyShortBreak(Activity context) {
-        init_notification(context, "Short Break", "It's time for a break!", NotificationID.SHORT_BREAK.ordinal());
-    }
+    public static void send_notification(Activity context, TimerNotification.NotificationType notificationType) {
+        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
+        String focusMin = sharedConfig.getString("interval_focus", "30");
+        String longBreakMin = sharedConfig.getString("interval_long_break", "15");
+        String shortBreakMin = sharedConfig.getString("interval_break", "5");
+        String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
 
-    public static void notifyLongBreak(Activity context) {
-        init_notification(context, "Long Break", "It's time for a break!", NotificationID.LONG_BREAK.ordinal());
-    }
-
-    public static void notifyIntervalStart(Activity context) {
-        init_notification(context, "Work Time", "Let's get back to work!", NotificationID.INTERVAL_START.ordinal());
-    }
-
-    public static void notifyComplete(Activity context) {
-        init_notification(context, "Todo Complete", "Time is up!", NotificationID.COMPLETE.ordinal());
+        String text;
+        switch(notificationType) {
+            case SHORT_BREAK:
+                text = autoStartInterval.equals("start_manually") ? "Click to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
+                init_notification(context, "Short Break", text, 1);
+                break;
+            case LONG_BREAK:
+                text = autoStartInterval.equals("start_manually") ? "Click to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
+                init_notification(context, "Long Break", "Your " + longBreakMin + "min break is starting!", 2);
+                break;
+            case INTERVAL:
+                text = autoStartInterval.equals("start_manually") ? "Click to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
+                init_notification(context, "Be Productive", text, 3);
+                break;
+            case COMPLETE:
+                init_notification(context, "Finished", "Time's up, good work!", 4);
+                break;
+            default:
+                break;
+        }
     }
 
     private static void init_notification(Activity context, String title, String text, int ID) {
