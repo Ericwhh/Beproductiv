@@ -62,6 +62,7 @@ public class TimerNotification {
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         createNotificationChannel(context, title, ID);
+        notificationManager.cancelAll(); // Note: If adding non-timer related notifications in the future, change to cancel(id)
         notificationManager.notify(ID, builder.build());
     }
 
