@@ -35,31 +35,33 @@ public class TimerNotification {
         String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
 
         String text;
+        boolean isManual = autoStartInterval.equals("start_manually");
         switch(notificationType) {
             case SHORT_BREAK:
-                text = autoStartInterval.equals("start_manually") ? "It's time to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
-                init_notification(context, "Short Break", text, notificationType.getId());
+                text = isManual ? "It's time to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
+                init_notification(context, "Short Break", text, notificationType);
                 break;
             case LONG_BREAK:
-                text = autoStartInterval.equals("start_manually") ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
-                init_notification(context, "Long Break", text, notificationType.getId());
+                text = isManual ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
+                init_notification(context, "Long Break", text, notificationType);
                 break;
             case INTERVAL:
-                text = autoStartInterval.equals("start_manually") ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
-                init_notification(context, "Be Productive", text, notificationType.getId());
+                text = isManual ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
+                init_notification(context, "Be Productive", text, notificationType);
                 break;
             case COMPLETE:
-                init_notification(context, "Finished", "Time's up, good work!", notificationType.getId());
+                init_notification(context, "Finished", "Time's up, good work!", notificationType);
                 break;
             default:
                 break;
         }
     }
 
-    private static void init_notification(Activity context, String title, String text, int ID) {
+    private static void init_notification(Activity context, String title, String text, NotificationType notificationType) {
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
         if (!sharedConfig.getBoolean("notifications", false)) { return; }
 
+        int ID = notificationType.getId();
         Intent intent = context.getIntent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -74,7 +76,13 @@ public class TimerNotification {
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         createNotificationChannel(context, title, ID);
-        notificationManager.cancelAll(); // Note: If adding non-timer related notifications in the future, change to cancel(id)
+
+        // Clear existing timer notifications
+        notificationManager.cancel(NotificationType.SHORT_BREAK.getId());
+        notificationManager.cancel(NotificationType.LONG_BREAK.getId());
+        notificationManager.cancel(NotificationType.INTERVAL.getId());
+        notificationManager.cancel(NotificationType.COMPLETE.getId());
+
         notificationManager.notify(ID, builder.build());
     }
 
