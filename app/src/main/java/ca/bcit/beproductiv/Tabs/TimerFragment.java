@@ -23,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
 import ca.bcit.beproductiv.IntervalState;
+import ca.bcit.beproductiv.TimerNotification;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TimerState;
 
@@ -96,18 +97,44 @@ public class TimerFragment extends Fragment {
                 updateViewTimeRemaining();
             }
             public void onFinish() {
+                SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
+                triggerNotification();
                 intervalState = intervalState.next();
+                if (autoStartInterval.equals("start_manually")) {
+                    timerState = TimerState.Paused;
+                }
                 if(intervalState == IntervalState.COMPLETED_ALL){
                     timerState = TimerState.Completed;
                 }
-                circularProgressBar.setProgress(0);
                 updateButtons();
                 updateIntervalCheckMarks();
                 resetTimerValues();
                 updateCircleProgress();
                 updateViewTimeRemaining();
-                startTimer();
 
+                if (autoStartInterval.equals("start_immediately")) {
+                    startTimer();
+                }
+            }
+
+            private void triggerNotification() {
+                switch(intervalState) {
+                    case INTERVAL_ONE:
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.SHORT_BREAK);
+                        break;
+                    case INTERVAL_TWO:
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.LONG_BREAK);
+                        break;
+                    case BREAK_ONE:
+                    case BREAK_TWO:
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.INTERVAL);
+                        break;
+                    case COMPLETED_ALL:
+                    default:
+                        TimerNotification.send_notification(getActivity(), TimerNotification.NotificationType.COMPLETE);
+                        break;
+                }
             }
         }.start();
     }
@@ -247,7 +274,7 @@ public class TimerFragment extends Fragment {
             startNowButton.setVisibility(View.VISIBLE);
             resumeButton.setVisibility(View.GONE);
         }
-    };
+    }
 
     private void updateViewTimeRemaining(){
         final TextView timeView = root.findViewById(R.id.timeRemaining);

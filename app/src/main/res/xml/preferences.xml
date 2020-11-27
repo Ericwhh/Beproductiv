@@ -50,11 +50,10 @@
         app:iconSpaceReserved="false" >
         <ListPreference
             app:layout="@layout/preference_card_top"
-            app:defaultValue="30"
-            app:entries="@array/auto_start_break_entries"
-            app:entryValues="@array/auto_start_break_values"
-            app:key="auto_start_break"
-            app:title="@string/other_auto_start_breaks"
+            app:entries="@array/auto_start_interval_entries"
+            app:entryValues="@array/auto_start_interval_values"
+            app:key="auto_start_interval"
+            app:title="@string/other_auto_start_intervals"
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
