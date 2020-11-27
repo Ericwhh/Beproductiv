@@ -21,9 +21,15 @@ public class RemoveTodoItemsAsync extends AsyncTask<Integer, Void, Integer> {
         AppDatabase db = AppDatabase.getInstance(contextRef.get());
         TodoItemDao dao = db.getTaskDao();
 
+        Integer selectedTodoUID = db.getTimerDataDao().getTodoItemUIDOnce();
+
         for (Integer itemUID : todoUIDs) {
             TodoItem item = dao.findByUID(itemUID);
             dao.delete(item);
+
+            if (selectedTodoUID.equals(itemUID)) {
+                db.getTimerDataDao().setTodoItemUID(-1);
+            }
         }
 
         return 0;
