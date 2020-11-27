@@ -1,97 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    xmlns:tool="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <include layout="@layout/tab_divider"  />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:padding="15dp"
-        style="@style/TimerCard">
-        <com.mikhaellopez.circularprogressbar.CircularProgressBar
-            android:id="@+id/progress_circular"
-            android:layout_width="275dp"
-            android:layout_height="275dp"
-            app:cpb_background_progressbar_color="@color/background"
-            app:cpb_background_progressbar_width="0dp"
-            app:cpb_progress_direction="to_left"
-            app:cpb_progressbar_color="@color/primary"
-            app:cpb_progressbar_width="20dp"
-            app:cpb_round_border="false"
-            app:cpb_start_angle="-45"
-            android:layout_centerHorizontal="true"
-            />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:layout_alignTop="@+id/progress_circular">
-            <ImageView
-                android:id="@+id/intervalStatus1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/ic_interval_incomplete"/>
-            <ImageView
-                android:id="@+id/intervalStatus2"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/ic_interval_incomplete"/>
-            <ImageView
-                android:id="@+id/intervalStatus3"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/ic_interval_incomplete"/>
+        android:paddingTop="16dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
 
-        </LinearLayout>
-        <TextView
-            android:id="@+id/timeRemaining"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat"
-            android:textSize="40sp"
-            tools:text="00:00:00"
-            android:layout_marginTop="110dp"
-            android:layout_centerHorizontal="true"
-            />
-        <LinearLayout
-            android:id="@+id/timerButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="110dp"
-            android:orientation="vertical"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true">
-            <Button
-                android:id="@+id/startButton"
-                android:text="@string/start"
-                style="@style/ButtonPrimary"
-                />
-            <Button
-                android:id="@+id/resumeButton"
-                android:text="@string/resume"
-                android:visibility="gone"
-                style="@style/ButtonPrimary" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view"
+            style="@style/TodoCard"
+            app:shapeAppearance="@style/RoundedCorners">
+            <LinearLayout
+                style="@style/CardLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="72dp"
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <Button
-                android:id="@+id/pauseButton"
-                android:text="@string/pause"
-                android:visibility="gone"
-                style="@style/ButtonPrimary"/>
-            <Button
-                android:id="@+id/stopButton"
-                android:text="@string/stop"
-                android:visibility="gone"
-                style="@style/ButtonPrimary"/>
-        </LinearLayout>
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/selectATask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_a_task"
+                    android:textSize="18sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/selectedTaskLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                style="@style/CardLayout"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/todo_name"
+                        style="@style/CardHeader"
+                        android:text="Hello"
+                        tool:text="Hello" />
+                    <TextView
+                        android:id="@+id/todo_description"
+                        android:text="World\nWorld"
+                        style="@style/CardSubHeader"
+                        tool:text="World\nWorld" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRemoveSelectedTask"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_baseline_close_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/transparentWhite" />
 
 
-</LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_height="450dp"
+            android:layout_width="match_parent"
+            style="@style/TimerCard"
+            app:shapeAppearance="@style/RoundedCorners">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="match_parent">
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/progress_circular"
+                    android:layout_width="275dp"
+                    android:layout_height="275dp"
+                    app:cpb_background_progressbar_color="@color/surface"
+                    app:cpb_progress_direction="to_left"
+                    app:cpb_progressbar_color="@color/primary"
+                    app:cpb_progressbar_width="20dp"
+                    app:cpb_round_border="false"
+                    app:cpb_start_angle="-45"
+                    android:layout_centerHorizontal="true"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignTop="@+id/progress_circular">
+                    <ImageView
+                        android:id="@+id/intervalStatus1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_interval_incomplete"/>
+                    <ImageView
+                        android:id="@+id/intervalStatus2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_interval_incomplete"/>
+                    <ImageView
+                        android:id="@+id/intervalStatus3"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_interval_incomplete"/>
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/timeRemaining"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat"
+                    android:textSize="40sp"
+                    tools:text="00:00:00"
+                    android:layout_marginTop="110dp"
+                    android:layout_centerHorizontal="true"
+                    />
+                <LinearLayout
+                    android:id="@+id/timerButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="110dp"
+                    android:orientation="vertical"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true">
+                    <Button
+                        android:id="@+id/startButton"
+                        android:text="@string/start"
+                        style="@style/ButtonPrimary"
+                        />
+                    <Button
+                        android:id="@+id/resumeButton"
+                        android:text="@string/resume"
+                        android:visibility="gone"
+                        style="@style/ButtonPrimary" />
+
+                    <Button
+                        android:id="@+id/pauseButton"
+                        android:text="@string/pause"
+                        android:visibility="gone"
+                        style="@style/ButtonPrimary"/>
+                    <Button
+                        android:id="@+id/stopButton"
+                        android:text="@string/stop"
+                        android:visibility="gone"
+                        style="@style/ButtonPrimary"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</FrameLayout>

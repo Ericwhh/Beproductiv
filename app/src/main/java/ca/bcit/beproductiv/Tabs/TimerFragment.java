@@ -1,27 +1,49 @@
+
+
 package ca.bcit.beproductiv.Tabs;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
+import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
+import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.TimerData;
+import ca.bcit.beproductiv.Database.TimerDataDao;
+import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.IntervalState;
 import ca.bcit.beproductiv.TimerNotification;
 import ca.bcit.beproductiv.R;
@@ -41,6 +63,18 @@ public class TimerFragment extends Fragment {
     private static final int SECONDS_IN_A_MIN = 60;
     private static final int SECONDS_IN_AN_HOUR = 3600;
     private static final double MagicTimerRatio = 4.0/3;
+
+    private String timeViewText;
+    private TextView timeView;
+    private TextView selectedTaskName;
+    private TextView selectedTaskDesc;
+    private LinearLayout selectedTaskLayout;
+    private MaterialCardView selectedTaskCardView;
+    private MaterialButton removeSelectedTaskButton;
+    private TextView selectAClassText;
+    private ViewPager viewPager;
+
+    private AppDatabase appDatabase;
 
     private View root;
     public TimerFragment() {
@@ -65,13 +99,23 @@ public class TimerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intervalState = IntervalState.INTERVAL_ONE;
+        appDatabase = AppDatabase.getInstance(getContext());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_timer, container, false);
+        timeView = root.findViewById(R.id.timeRemaining);
+        selectedTaskName = root.findViewById(R.id.todo_name);
+        selectedTaskDesc = root.findViewById(R.id.todo_description);
+        selectedTaskCardView = root.findViewById(R.id.card_view);
+        selectedTaskLayout = root.findViewById(R.id.selectedTaskLayout);
+        removeSelectedTaskButton = root.findViewById(R.id.btnRemoveSelectedTask);
+        selectAClassText = root.findViewById(R.id.selectATask);
+
+        viewPager = getActivity().findViewById(R.id.pager);
         if(timerState == TimerState.Stopped) resetTimerValues();
         updateCircleProgress();
         updateViewTimeRemaining();
@@ -79,22 +123,32 @@ public class TimerFragment extends Fragment {
         addOnClickHandlers();
         updateButtons();
         updateIntervalCheckMarks();
-
+        setUpSelectedTaskHandlers();
         return root;
     }
+
+
+
 
     private void startTimer(){
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
 
-        new CountDownTimer(millisRemaining, 10) {
+        new CountDownTimer(millisRemaining, 50) {
+            double prevMillisRemaining = Double.MAX_VALUE;
             public void onTick(long millisUntilFinished) {
                 if(timerState != TimerState.Running) {
                     cancel();
                     return;
                 }
+
                 millisRemaining = millisUntilFinished;
+                if (prevMillisRemaining - millisRemaining > 500) {
+                    updateViewTimeRemaining();
+                    prevMillisRemaining = millisRemaining;
+                }
+
                 circularProgressBar.setProgress((int) millisRemaining);
-                updateViewTimeRemaining();
+
             }
             public void onFinish() {
                 SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -139,7 +193,6 @@ public class TimerFragment extends Fragment {
         }.start();
     }
 
-
     private void setTimerIntervals(){
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
 
@@ -162,6 +215,41 @@ public class TimerFragment extends Fragment {
         }
         millisRemaining = timerTime;
 
+    }
+    private void setUpSelectedTaskHandlers() {
+        final TimerDataDao timerDataDao = appDatabase.getTimerDataDao();
+        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                AppDatabase db = AppDatabase.getInstance(getContext());
+                if(integer != -1){
+                    TodoItem selectedTask = db.getTaskDao().findByUID(integer);
+                    System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
+                    selectedTaskName.setText(selectedTask.name);
+                    selectedTaskDesc.setText(selectedTask.description);
+                    selectedTaskCardView.setOnClickListener(null);
+                    selectAClassText.setVisibility(View.GONE);
+                    selectedTaskLayout.setVisibility(View.VISIBLE);
+                } else {
+                    selectedTaskLayout.setVisibility(View.GONE);
+                    selectAClassText.setVisibility(View.VISIBLE);
+                    selectedTaskCardView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            viewPager.setCurrentItem(1);
+                        }
+                    });
+
+                }
+
+            }
+        });
+        removeSelectedTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timerDataDao.setTodoItemUID(-1);
+            }
+        });
     }
 
     private void addOnClickHandlers() {
@@ -276,8 +364,7 @@ public class TimerFragment extends Fragment {
         }
     }
 
-    private void updateViewTimeRemaining(){
-        final TextView timeView = root.findViewById(R.id.timeRemaining);
+    private void updateViewTimeRemaining() {
         if(timerState != TimerState.Completed){
             long secondsUntilFinished =  millisRemaining / MILIS_IN_A_SECOND;
             long hours = secondsUntilFinished/SECONDS_IN_AN_HOUR;
