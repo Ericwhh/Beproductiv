@@ -13,7 +13,18 @@ import androidx.preference.PreferenceManager;
 
 public class TimerNotification {
     public enum NotificationType {
-        SHORT_BREAK, LONG_BREAK, INTERVAL, COMPLETE
+        SHORT_BREAK(1),
+        LONG_BREAK(2),
+        INTERVAL(3),
+        COMPLETE(4);
+
+        private final int ID;
+        NotificationType(int id) {
+            this.ID = id;
+        }
+        public int getId() {
+            return this.ID;
+        }
     }
 
     public static void send_notification(Activity context, TimerNotification.NotificationType notificationType) {
@@ -27,18 +38,18 @@ public class TimerNotification {
         switch(notificationType) {
             case SHORT_BREAK:
                 text = autoStartInterval.equals("start_manually") ? "It's time to start your " + shortBreakMin + " min break!" : "Your " + shortBreakMin + " min break is starting!";
-                init_notification(context, "Short Break", text, 1);
+                init_notification(context, "Short Break", text, notificationType.getId());
                 break;
             case LONG_BREAK:
                 text = autoStartInterval.equals("start_manually") ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
-                init_notification(context, "Long Break", text, 2);
+                init_notification(context, "Long Break", text, notificationType.getId());
                 break;
             case INTERVAL:
                 text = autoStartInterval.equals("start_manually") ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
-                init_notification(context, "Be Productive", text, 3);
+                init_notification(context, "Be Productive", text, notificationType.getId());
                 break;
             case COMPLETE:
-                init_notification(context, "Finished", "Time's up, good work!", 4);
+                init_notification(context, "Finished", "Time's up, good work!", notificationType.getId());
                 break;
             default:
                 break;
@@ -58,7 +69,8 @@ public class TimerNotification {
                 .setContentText(text)
                 .setVibrate(new long[] {0, 1000})
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
 
         NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
         createNotificationChannel(context, title, ID);
