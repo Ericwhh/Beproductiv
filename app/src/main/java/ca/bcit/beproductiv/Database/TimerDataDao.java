@@ -18,6 +18,9 @@ public interface TimerDataDao {
     @Query("SELECT timer_todo_uid FROM timerdata LIMIT 1")
     LiveData<Integer> getTodoItemUID();
 
+    @Query("SELECT timer_todo_uid FROM timerdata LIMIT 1")
+    Integer getTodoItemUIDOnce();
+
     @Query("UPDATE timerdata SET timer_todo_uid = :todoItemUID")
     void setTodoItemUID(int todoItemUID);
 
