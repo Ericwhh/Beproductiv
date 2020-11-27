@@ -49,7 +49,7 @@ public class TimerNotification {
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
         if (!sharedConfig.getBoolean("notifications", false)) { return; }
 
-        Intent intent = new Intent(context, HomeActivity.class);
+        Intent intent = context.getIntent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, String.valueOf(ID))
