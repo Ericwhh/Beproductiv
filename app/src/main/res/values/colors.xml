@@ -11,5 +11,5 @@
     <color name="secondaryText">#44A498</color>
     <color name="onPrimary">#000000</color>
     <color name="transparentWhite">#beffffff</color>
-
+    <color name="intervalIncomplete">#44A498</color>
 </resources>

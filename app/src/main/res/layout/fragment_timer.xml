@@ -130,13 +130,24 @@
 
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/focusOrBreakText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="36sp"
+                    tools:text="Focus"
+                    android:layout_marginTop="92dp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/secondary"
+                    android:alpha="0.8"
+                    />
+                <TextView
                     android:id="@+id/timeRemaining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat"
                     android:textSize="40sp"
                     tools:text="00:00:00"
-                    android:layout_marginTop="110dp"
+                    android:layout_marginTop="128dp"
                     android:layout_centerHorizontal="true"
                     />
                 <LinearLayout
