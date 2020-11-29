@@ -17,7 +17,7 @@
         android:layout_marginBottom="5dp"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/todo_form_back_button"
             style="@style/IconButton"
             android:paddingStart="16dp"
@@ -35,7 +35,7 @@
             style="@style/DefaultTextView"
             android:textSize="25sp"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/todo_form_delete_button"
             style="@style/IconButton"
             android:layout_alignParentEnd="true"

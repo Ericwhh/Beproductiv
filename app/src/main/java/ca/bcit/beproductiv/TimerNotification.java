@@ -31,6 +31,8 @@ public class TimerNotification {
 
     public static void send_notification(Activity context, TimerNotification.NotificationType notificationType) {
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!sharedConfig.getBoolean("notifications", false)) { return; }
+
         int focusSecs = Integer.parseInt(sharedConfig.getString("interval_focus", "1200"));
         int longBreakSecs = Integer.parseInt(sharedConfig.getString("interval_long_break", "900"));
         int shortBreakSecs = Integer.parseInt(sharedConfig.getString("interval_break", "300"));
@@ -65,9 +67,6 @@ public class TimerNotification {
     }
 
     private static void init_notification(Activity context, String title, String text, NotificationType notificationType) {
-        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!sharedConfig.getBoolean("notifications", false)) { return; }
-
         int ID = notificationType.getId();
         Intent intent = context.getIntent();
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);

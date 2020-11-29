@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
 import ca.bcit.beproductiv.Database.TimerData;
 import ca.bcit.beproductiv.Database.TimerDataDao;
 import ca.bcit.beproductiv.Database.TodoItem;
@@ -66,6 +67,7 @@ public class TimerFragment extends Fragment {
     private static final double MagicTimerRatio = 4.0/3;
 
     private String timeViewText;
+    private TextView focusOrBreakView;
     private TextView timeView;
     private TextView selectedTaskName;
     private TextView selectedTaskDesc;
@@ -107,9 +109,11 @@ public class TimerFragment extends Fragment {
         selectedTaskLayout = root.findViewById(R.id.selectedTaskLayout);
         removeSelectedTaskButton = root.findViewById(R.id.btnRemoveSelectedTask);
         selectAClassText = root.findViewById(R.id.selectATask);
+        focusOrBreakView = root.findViewById(R.id.focusOrBreakText);
 
         viewPager = getActivity().findViewById(R.id.pager);
         if(timerState == TimerState.Stopped) resetTimerValues();
+        updateFocusOrBreak();
         updateCircleProgress();
         updateViewTimeRemaining();
         addOnClickHandlers();
@@ -159,6 +163,7 @@ public class TimerFragment extends Fragment {
                     startTimer();
                 }
 
+                updateFocusOrBreak();
                 updateButtons();
                 updateIntervalCheckMarks();
                 updateCircleProgress();
@@ -184,6 +189,18 @@ public class TimerFragment extends Fragment {
                 }
             }
         }.start();
+    }
+
+    private void updateFocusOrBreak() {
+        if (intervalState.isBreak()) {
+            focusOrBreakView.setText("Break");
+            focusOrBreakView.setTextColor(getResources().getColor(R.color.intervalIncomplete));
+        }
+        else {
+            focusOrBreakView.setText("Focus");
+            focusOrBreakView.setTextColor(getResources().getColor(R.color.primary));
+        }
+        focusOrBreakView.setAlpha(0.8f);
     }
 
     private void setTimerIntervals(){
@@ -216,14 +233,23 @@ public class TimerFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 AppDatabase db = AppDatabase.getInstance(getContext());
-                TodoItem selectedTask = db.getTaskDao().findByUID(integer);
+                LiveData<TodoItem> selectedTask = db.getTaskDao().findByUIDLiveData(integer);
+
                 if(integer != -1 && selectedTask != null) {
-                    System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
-                    selectedTaskName.setText(selectedTask.name);
-                    selectedTaskDesc.setText(selectedTask.description);
-                    selectedTaskCardView.setOnClickListener(null);
-                    selectAClassText.setVisibility(View.GONE);
-                    selectedTaskLayout.setVisibility(View.VISIBLE);
+                    selectedTask.observe(getViewLifecycleOwner(), new Observer<TodoItem>() {
+                        @Override
+                        public void onChanged(TodoItem todoItem) {
+                            if (todoItem.isComplete) {
+                                new SetTimerTodoAsync(getContext()).execute(-1);
+                            }
+                            System.out.println("Selected UID: " + integer + "task name " + todoItem.name);
+                            selectedTaskName.setText(todoItem.name);
+                            selectedTaskDesc.setText(todoItem.description);
+                            selectedTaskCardView.setOnClickListener(null);
+                            selectAClassText.setVisibility(View.GONE);
+                            selectedTaskLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
                 } else {
                     selectedTaskLayout.setVisibility(View.GONE);
                     selectAClassText.setVisibility(View.VISIBLE);
@@ -280,6 +306,7 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 timerState = TimerState.Stopped;
                 intervalState = IntervalState.INTERVAL_ONE;
+                updateFocusOrBreak();
                 updateIntervalCheckMarks();
                 resetTimerValues();
                 updateCircleProgress();
@@ -371,7 +398,11 @@ public class TimerFragment extends Fragment {
         long hours = secondsUntilFinished / SECONDS_IN_AN_HOUR;
         long minutes = (secondsUntilFinished % SECONDS_IN_AN_HOUR) / SECONDS_IN_A_MIN;
         long secs = secondsUntilFinished % SECONDS_IN_A_MIN;
-        String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
-        return time;
+        if (hours >= 1){
+            return String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
+        }
+        else {
+            return String.format(Locale.getDefault(),"%02d:%02d", minutes, secs);
+        }
     }
 }

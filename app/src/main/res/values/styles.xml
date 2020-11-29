@@ -106,7 +106,7 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="ButtonPrimary" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">160dp</item>
         <item name="android:backgroundTint">@color/primary</item>
