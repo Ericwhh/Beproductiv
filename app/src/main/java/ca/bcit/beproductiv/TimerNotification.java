@@ -51,11 +51,11 @@ public class TimerNotification {
                 init_notification(context, "Short Break", text, notificationType);
                 break;
             case LONG_BREAK:
-                text = isManual ? "It's time to start your " +  longBreakMin + " min break!" : "Your " +  longBreakMin + " min break is starting!";
+                text = isManual ? "It's time to start your " + longBreakMin + " min break!" : "Your " + longBreakMin + " min break is starting!";
                 init_notification(context, "Long Break", text, notificationType);
                 break;
             case INTERVAL:
-                text = isManual ? "It's time to start being productive for " +  focusMin + " min!" : "Your " +  focusMin + " min productivity period is starting!";
+                text = isManual ? "It's time to start being productive for " + focusMin + " min!" : "Your " + focusMin + " min productivity period is starting!";
                 init_notification(context, "Be Productive", text, notificationType);
                 break;
             case COMPLETE:
