@@ -46,7 +46,7 @@
     </style>
 
     <style name="PreferenceCard" parent="Card">
-        <item name="android:minHeight">68dp</item>
+        <item name="rippleColor">@color/surfaceRipple</item>
     </style>
 
     <style name="CardLayout">

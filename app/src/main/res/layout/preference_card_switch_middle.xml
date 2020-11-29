@@ -6,7 +6,7 @@
     app:shapeAppearance="@style/RoundedNoCorners"
     >
 
-    <include layout="@layout/preference_content" />
+    <include layout="@layout/preference_switch_content" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@android:id/switch_widget"

@@ -14,7 +14,7 @@
     <string name="username_title">Name</string>
 
     <!-- Intervals Preferences -->
-    <string name="intervals_header">Intervals</string>
+    <string name="intervals_header">Timer</string>
     <string name="intervals_focus">Focus</string>
     <string name="intervals_break">Break</string>
     <string name="intervals_long_break">Long Break</string>
@@ -23,7 +23,7 @@
     <string name="other_header">Other</string>
     <string name="other_auto_start_intervals">Auto-start intervals</string>
     <string name="other_notifications">Enable notifications</string>
-    <string name="other_show_completed">Show completed to-dos</string>
+    <string name="other_show_completed">Show completed</string>
 
     <string name="start">Start</string>
     <string name="resume">Resume</string>
