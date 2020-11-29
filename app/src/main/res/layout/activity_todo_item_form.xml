@@ -106,6 +106,7 @@
             android:id="@+id/todo_form_save_button"
             style="@style/ButtonPrimary"
             android:layout_gravity="center_horizontal"
+            android:textFontWeight="600"
             android:text="Save" />
 
     </LinearLayout>
