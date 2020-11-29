@@ -66,6 +66,7 @@ public class TimerFragment extends Fragment {
     private static final double MagicTimerRatio = 4.0/3;
 
     private String timeViewText;
+    private TextView focusOrBreakView;
     private TextView timeView;
     private TextView selectedTaskName;
     private TextView selectedTaskDesc;
@@ -107,9 +108,11 @@ public class TimerFragment extends Fragment {
         selectedTaskLayout = root.findViewById(R.id.selectedTaskLayout);
         removeSelectedTaskButton = root.findViewById(R.id.btnRemoveSelectedTask);
         selectAClassText = root.findViewById(R.id.selectATask);
+        focusOrBreakView = root.findViewById(R.id.focusOrBreakText);
 
         viewPager = getActivity().findViewById(R.id.pager);
         if(timerState == TimerState.Stopped) resetTimerValues();
+        updateFocusOrBreak();
         updateCircleProgress();
         updateViewTimeRemaining();
         addOnClickHandlers();
@@ -159,6 +162,7 @@ public class TimerFragment extends Fragment {
                     startTimer();
                 }
 
+                updateFocusOrBreak();
                 updateButtons();
                 updateIntervalCheckMarks();
                 updateCircleProgress();
@@ -184,6 +188,18 @@ public class TimerFragment extends Fragment {
                 }
             }
         }.start();
+    }
+
+    private void updateFocusOrBreak() {
+        if (intervalState.isBreak()) {
+            focusOrBreakView.setText("Break");
+            focusOrBreakView.setTextColor(getResources().getColor(R.color.intervalIncomplete));
+        }
+        else {
+            focusOrBreakView.setText("Focus");
+            focusOrBreakView.setTextColor(getResources().getColor(R.color.primary));
+        }
+        focusOrBreakView.setAlpha(0.8f);
     }
 
     private void setTimerIntervals(){
@@ -280,6 +296,7 @@ public class TimerFragment extends Fragment {
             public void onClick(View v) {
                 timerState = TimerState.Stopped;
                 intervalState = IntervalState.INTERVAL_ONE;
+                updateFocusOrBreak();
                 updateIntervalCheckMarks();
                 resetTimerValues();
                 updateCircleProgress();
