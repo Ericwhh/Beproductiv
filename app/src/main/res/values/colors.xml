@@ -4,6 +4,7 @@
     <color name="secondary">#FFB515</color>
     <color name="background">#383c5d</color>
     <color name="surface">#404674</color>
+    <color name="surface_secondary">#50404674</color>
     <color name="surfaceRipple">#254e558d</color>
     <color name="onSurfaceText">#8E92AB</color>
     <color name="onBackgroundText">#ffffff</color>

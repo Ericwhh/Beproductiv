@@ -4,6 +4,7 @@ import android.app.Application;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,18 +46,31 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.Async.GetTodoItemsAsync;
 import ca.bcit.beproductiv.Database.Async.RemoveTodoItemsAsync;
 import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
+import ca.bcit.beproductiv.Database.Async.UpdateTodoItemsAsync;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.HomeActivity;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
 
 public class TodoFragment extends Fragment {
+
+    private View root;
+    private LiveData<List<TodoItem>> myTodoItems;
+    private boolean showCompleted = true;
+    private TodoCardsAdapter todoCardsAdapter;
+    private AppDatabase appDatabase;
+
     public TodoFragment() {
         // Required empty public constructor
     }
@@ -63,38 +78,29 @@ public class TodoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appDatabase = AppDatabase.getInstance(getContext());
+        myTodoItems = appDatabase.getTaskDao().getAll();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_todo, container, false);
+        root = inflater.inflate(R.layout.fragment_todo, container, false);
         RecyclerView contRecycler = root.findViewById(R.id.my_recycler);
-        LiveData<List<TodoItem>> myTodoItems;
 
-
-
-        try {
-            myTodoItems = new GetTodoItemsAsync(getContext()).execute().get();
-        } catch (ExecutionException | InterruptedException e) {
-            myTodoItems = null;
-            e.printStackTrace();
-        }
-
+        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
+        showCompleted = sharedConfig.getBoolean("show_completed", true);
         ViewPager viewPager = getActivity().findViewById(R.id.pager);
-        final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>(), contRecycler, viewPager);
+        todoCardsAdapter = new TodoCardsAdapter(new ArrayList<>(), contRecycler, viewPager);
         contRecycler.setAdapter(todoCardsAdapter);
 
         myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
             @Override
             public void onChanged(List<TodoItem> todoItems) {
-                todoCardsAdapter.setTodoItems(todoItems);
-                todoCardsAdapter.notifyDataSetChanged();
+                updateTodoAdapter(todoItems);
             }
         });
-
-
 
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         contRecycler.setLayoutManager(lm);
@@ -112,23 +118,32 @@ public class TodoFragment extends Fragment {
         return root;
     }
 
-    static class GetTodoItemsAsync extends AsyncTask<Void, Void, LiveData<List<TodoItem>>> {
-        private final WeakReference<Context> contextRef;
-
-        public GetTodoItemsAsync(Context context) {
-            contextRef = new WeakReference<>(context);
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
+        boolean configShowCompleted = sharedConfig.getBoolean("show_completed", false);
+        if (configShowCompleted != showCompleted) {
+            showCompleted = configShowCompleted;
+            updateTodoAdapter(appDatabase.getTaskDao().getAllOnce());
         }
+    }
 
-        @Override
-        protected LiveData<List<TodoItem>> doInBackground(Void ...voids) {
-            AppDatabase db = AppDatabase.getInstance(contextRef.get());
-            return db.getTaskDao().getAll();
-        }
+    private void updateTodoAdapter(List<TodoItem> todoItems) {
+        Stream<TodoItem> todoItemStream = todoItems.stream()
+                .sorted(Comparator.comparing(TodoItem::getIsComplete));
+
+        if (!showCompleted)
+            todoItemStream = todoItemStream.filter(todoItem -> !todoItem.isComplete);
+
+        todoCardsAdapter.setTodoItems(todoItemStream.collect(Collectors.toList()));
+        todoCardsAdapter.notifyDataSetChanged();
     }
 
     static class TodoCardsAdapter extends RecyclerView.Adapter<TodoCardsAdapter.ViewHolder>
     {
         private ArrayList<TodoItem> _todoItems;
+
         private int _expandedPosition;
         private final RecyclerView _rootRecyclerView;
         private final ViewPager _viewPager;
@@ -143,6 +158,7 @@ public class TodoFragment extends Fragment {
             private final MaterialButton btnContextMenu;
             private final ImageView imageViewExpandCollapse;
             private final MaterialButton btnStartTimer;
+            private final MaterialButton btnCompleteTodo;
 
             public ViewHolder(MaterialCardView v) {
                 super(v);
@@ -155,6 +171,7 @@ public class TodoFragment extends Fragment {
                 btnContextMenu = cardView.findViewById(R.id.btnEditItem);
                 imageViewExpandCollapse = cardView.findViewById(R.id.imageViewExpandCollapse);
                 btnStartTimer = cardView.findViewById(R.id.btnStartTimer);
+                btnCompleteTodo = cardView.findViewById(R.id.btnCompleteTodo);
             }
         }
 
@@ -167,6 +184,7 @@ public class TodoFragment extends Fragment {
 
         public void setTodoItems(List<TodoItem> todoItems) {
             _todoItems = new ArrayList<>(todoItems);
+
         }
 
         @Override
@@ -187,8 +205,21 @@ public class TodoFragment extends Fragment {
             final MaterialCardView cardView = holder.cardView;
             final boolean isExpanded = position == _expandedPosition;
 
-            holder.todoCardName.setText(_todoItems.get(position).name);
-            holder.todoCardDescription.setText(_todoItems.get(position).description);
+            TodoItem todoItem = _todoItems.get(position);
+
+            holder.todoCardName.setText(todoItem.name);
+            holder.todoCardDescription.setText(todoItem.description);
+
+            if (todoItem.isComplete) {
+                cardView.setCardBackgroundColor(cardView.getResources().getColor(R.color.surface_secondary));
+                Drawable completed = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_check_24);
+                holder.imageViewExpandCollapse.setImageDrawable(completed);
+                holder.layoutBottom.setVisibility(View.GONE);
+                holder.layoutMiddle.setVisibility(View.GONE);
+                return;
+            } else {
+                cardView.setCardBackgroundColor(cardView.getResources().getColor(R.color.surface));
+            }
 
             Drawable expandCollapseIcon;
 
@@ -196,7 +227,6 @@ public class TodoFragment extends Fragment {
                 holder.layoutBottom.setVisibility(View.VISIBLE);
                 holder.layoutMiddle.setVisibility(View.VISIBLE);
                 expandCollapseIcon = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_expand_less_24);
-
             } else {
                 holder.layoutBottom.setVisibility(View.GONE);
                 holder.layoutMiddle.setVisibility(View.GONE);
@@ -212,9 +242,9 @@ public class TodoFragment extends Fragment {
                     i.putExtra("FORM_ACTION", "EDIT");
 
                     // TODO: Send only uid instead of plaintext name and description
-                    i.putExtra("TODO_UID", _todoItems.get(position).uid);
-                    i.putExtra("TODO_NAME", _todoItems.get(position).name);
-                    i.putExtra("TODO_DESCRIPTION", _todoItems.get(position).description);
+                    i.putExtra("TODO_UID", todoItem.uid);
+                    i.putExtra("TODO_NAME", todoItem.name);
+                    i.putExtra("TODO_DESCRIPTION", todoItem.description);
 
                     cardView.getContext().startActivity(i);
                 }
@@ -232,12 +262,19 @@ public class TodoFragment extends Fragment {
             holder.btnStartTimer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new SetTimerTodoAsync(holder.cardView.getContext()).execute(_todoItems.get(position).uid);
+                    new SetTimerTodoAsync(holder.cardView.getContext()).execute(todoItem.uid);
                     _viewPager.setCurrentItem(0);
                 }
             });
 
-
+            holder.btnCompleteTodo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    todoItem.isComplete = true;
+                    new UpdateTodoItemsAsync(holder.cardView.getContext()).execute(todoItem);
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 }

@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     }
     public static class SectionsPageAdapter extends FragmentPagerAdapter {
         public SectionsPageAdapter(FragmentManager fm) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
         @Override

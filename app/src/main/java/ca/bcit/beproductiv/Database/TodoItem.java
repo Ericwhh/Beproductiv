@@ -43,4 +43,8 @@ public class TodoItem {
         Collections.addAll(items, dummyItems);
         return items;
     }
+
+    public boolean getIsComplete() {
+        return this.isComplete;
+    }
 }
