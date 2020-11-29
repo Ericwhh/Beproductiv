@@ -41,6 +41,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -153,8 +154,10 @@ public class TodoFragment extends Fragment {
 
             private final RelativeLayout layoutMiddle;
             private final RelativeLayout layoutBottom;
+            private final LinearLayout buttonRow;
             private final TextView todoCardName;
             private final TextView todoCardDescription;
+            private final TextView todoCardCompletionStatus;
             private final MaterialButton btnContextMenu;
             private final ImageView imageViewExpandCollapse;
             private final MaterialButton btnStartTimer;
@@ -166,8 +169,10 @@ public class TodoFragment extends Fragment {
 
                 layoutMiddle = cardView.findViewById(R.id.layoutMiddle);
                 layoutBottom = cardView.findViewById(R.id.layoutBottom);
+                buttonRow = cardView.findViewById(R.id.todoButtonRow);
                 todoCardName = cardView.findViewById(R.id.todo_name);
                 todoCardDescription = cardView.findViewById(R.id.todo_description);
+                todoCardCompletionStatus = cardView.findViewById(R.id.todoCompletionStatus);
                 btnContextMenu = cardView.findViewById(R.id.btnEditItem);
                 imageViewExpandCollapse = cardView.findViewById(R.id.imageViewExpandCollapse);
                 btnStartTimer = cardView.findViewById(R.id.btnStartTimer);
@@ -211,13 +216,12 @@ public class TodoFragment extends Fragment {
             holder.todoCardDescription.setText(todoItem.description);
 
             if (todoItem.isComplete) {
-                cardView.setCardBackgroundColor(cardView.getResources().getColor(R.color.surface_secondary));
-                Drawable completed = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_check_24);
-                holder.imageViewExpandCollapse.setImageDrawable(completed);
-                holder.layoutBottom.setVisibility(View.GONE);
-                holder.layoutMiddle.setVisibility(View.GONE);
-                return;
+                holder.todoCardCompletionStatus.setTextColor(cardView.getResources().getColor(R.color.secondaryText));
+                holder.buttonRow.setVisibility(View.GONE);
+                holder.todoCardCompletionStatus.setText(R.string.completed);
             } else {
+                holder.todoCardCompletionStatus.setText(R.string.to_do);
+                holder.todoCardCompletionStatus.setTextColor(cardView.getResources().getColor(R.color.primary));
                 cardView.setCardBackgroundColor(cardView.getResources().getColor(R.color.surface));
             }
 
@@ -226,10 +230,12 @@ public class TodoFragment extends Fragment {
             if (isExpanded) {
                 holder.layoutBottom.setVisibility(View.VISIBLE);
                 holder.layoutMiddle.setVisibility(View.VISIBLE);
+                holder.btnContextMenu.setVisibility(View.VISIBLE);
                 expandCollapseIcon = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_expand_less_24);
             } else {
                 holder.layoutBottom.setVisibility(View.GONE);
                 holder.layoutMiddle.setVisibility(View.GONE);
+                holder.btnContextMenu.setVisibility(View.GONE);
                 expandCollapseIcon = ContextCompat.getDrawable(cardView.getContext(), R.drawable.ic_baseline_expand_more_24);
             }
 

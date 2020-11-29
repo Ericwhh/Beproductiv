@@ -8,7 +8,7 @@
     <color name="surfaceRipple">#254e558d</color>
     <color name="onSurfaceText">#8E92AB</color>
     <color name="onBackgroundText">#ffffff</color>
-
+    <color name="secondaryText">#44A498</color>
     <color name="onPrimary">#000000</color>
     <color name="transparentWhite">#beffffff</color>
 
