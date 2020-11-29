@@ -54,11 +54,13 @@
                     <TextView
                         android:id="@+id/todo_name"
                         style="@style/CardHeader"
+                        android:maxLines="1"
                         android:text="Hello"
                         tool:text="Hello" />
                     <TextView
                         android:id="@+id/todo_description"
                         android:text="World\nWorld"
+                        android:maxLines="1"
                         style="@style/CardSubHeader"
                         tool:text="World\nWorld" />
 
@@ -155,29 +157,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="110dp"
                     android:orientation="vertical"
+                    android:layout_marginBottom="8dp"
                     android:layout_centerHorizontal="true"
                     android:layout_alignParentBottom="true">
                     <Button
                         android:id="@+id/startButton"
                         android:text="@string/start"
                         style="@style/ButtonPrimary"
+                        android:textFontWeight="600"
                         />
                     <Button
                         android:id="@+id/resumeButton"
                         android:text="@string/resume"
                         android:visibility="gone"
+                        android:textFontWeight="600"
                         style="@style/ButtonPrimary" />
 
                     <Button
                         android:id="@+id/pauseButton"
                         android:text="@string/pause"
                         android:visibility="gone"
+                        android:textFontWeight="600"
                         style="@style/ButtonPrimary"/>
                     <Button
                         android:id="@+id/stopButton"
                         android:text="@string/stop"
                         android:visibility="gone"
-                        style="@style/ButtonPrimary"/>
+                        android:textFontWeight="600"
+                        style="@style/ButtonSecondary"/>
                 </LinearLayout>
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>

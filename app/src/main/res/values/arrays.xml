@@ -3,13 +3,11 @@
     <string-array name="auto_start_interval_entries">
         <item>Immediately</item>
         <item>Manually</item>
-        <item>Detect Movement</item>
     </string-array>
 
     <string-array name="auto_start_interval_values">
         <item>start_immediately</item>
         <item>start_manually</item>
-        <item>detect_movement</item>
     </string-array>
 
     <string-array name="interval_focus_entries">
