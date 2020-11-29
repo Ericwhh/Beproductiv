@@ -85,7 +85,7 @@ public class TodoFragment extends Fragment {
         ViewPager viewPager = getActivity().findViewById(R.id.pager);
         final TodoCardsAdapter todoCardsAdapter = new TodoCardsAdapter(new ArrayList<TodoItem>(), contRecycler, viewPager);
         contRecycler.setAdapter(todoCardsAdapter);
-
+        contRecycler.setItemAnimator(null);
         myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
             @Override
             public void onChanged(List<TodoItem> todoItems) {
@@ -159,6 +159,7 @@ public class TodoFragment extends Fragment {
         }
 
         public TodoCardsAdapter(List<TodoItem> todoItems, RecyclerView recyclerView, ViewPager viewPager) {
+            this.setHasStableIds(true);
             _todoItems = new ArrayList<>(todoItems);
             _expandedPosition = -1;
             _rootRecyclerView = recyclerView;
@@ -167,6 +168,11 @@ public class TodoFragment extends Fragment {
 
         public void setTodoItems(List<TodoItem> todoItems) {
             _todoItems = new ArrayList<>(todoItems);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return _todoItems.get(position).uid;
         }
 
         @Override
