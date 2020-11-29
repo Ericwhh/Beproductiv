@@ -4,7 +4,7 @@
         app:iconSpaceReserved="false" >
         <ListPreference
             app:layout="@layout/preference_card_top"
-            app:defaultValue="30"
+            app:defaultValue="1800"
             app:entries="@array/interval_focus_entries"
             app:entryValues="@array/interval_focus_values"
             app:key="interval_focus"
@@ -15,7 +15,7 @@
 
         <ListPreference
             app:layout="@layout/preference_card_middle"
-            app:defaultValue="5"
+            app:defaultValue="300"
             app:entries="@array/interval_break_entries"
             app:entryValues="@array/interval_break_values"
             app:key="interval_break"
@@ -24,8 +24,8 @@
             app:iconSpaceReserved="false" />
 
         <ListPreference
-            app:layout="@layout/preference_card_bottom"
-            app:defaultValue="15"
+            app:layout="@layout/preference_card_middle"
+            app:defaultValue="900"
             app:entries="@array/interval_long_break_entries"
             app:entryValues="@array/interval_long_break_values"
             app:key="interval_long_break"
@@ -33,13 +33,8 @@
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/other_header"
-        app:allowDividerAbove="false"
-        app:iconSpaceReserved="false" >
         <ListPreference
-            app:layout="@layout/preference_card_top"
+            app:layout="@layout/preference_card_bottom"
             app:entries="@array/auto_start_interval_entries"
             app:entryValues="@array/auto_start_interval_values"
             app:key="auto_start_interval"
@@ -47,18 +42,30 @@
             app:useSimpleSummaryProvider="true"
             app:iconSpaceReserved="false" />
 
-        <SwitchPreference
-            app:layout="@layout/preference_card_switch_middle"
-            app:defaultValue="true"
-            app:title="@string/other_notifications"
-            app:key="notifications"
-            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="To-do"
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false" >
 
         <SwitchPreference
-            app:layout="@layout/preference_card_switch_bottom"
+            app:layout="@layout/preference_card_switch_default"
             app:defaultValue="false"
             app:title="@string/other_show_completed"
             app:key="show_completed"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory app:title="@string/other_header"
+        app:allowDividerAbove="false"
+        app:iconSpaceReserved="false" >
+
+        <SwitchPreference
+            app:layout="@layout/preference_card_switch_default"
+            app:defaultValue="true"
+            app:title="@string/other_notifications"
+            app:key="notifications"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

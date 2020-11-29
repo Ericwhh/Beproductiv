@@ -97,17 +97,13 @@
                     android:text="@string/label_select_task" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/ButtonPrimary"
+                    style="@style/ButtonSecondary"
                     android:id="@+id/btnCompleteTodo"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="0dp"
-                    android:textColor="@color/primary"
-                    android:backgroundTint="@color/background"
-                    app:strokeColor="@color/background"
-                    android:textAllCaps="true"
                     android:textFontWeight="600"
                     android:text="@string/label_complete" />
             </LinearLayout>

@@ -2,11 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    style="@style/Card"
+    style="@style/PreferenceCard"
     app:shapeAppearance="@style/RoundedNoCorners"
     >
 
-    <include layout="@layout/preference_content" />
+    <include layout="@layout/preference_switch_content" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@android:id/switch_widget"
