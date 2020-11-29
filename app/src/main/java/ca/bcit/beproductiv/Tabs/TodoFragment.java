@@ -220,6 +220,7 @@ public class TodoFragment extends Fragment {
                 holder.buttonRow.setVisibility(View.GONE);
                 holder.todoCardCompletionStatus.setText(R.string.completed);
             } else {
+                holder.buttonRow.setVisibility(View.VISIBLE);
                 holder.todoCardCompletionStatus.setText(R.string.to_do);
                 holder.todoCardCompletionStatus.setTextColor(cardView.getResources().getColor(R.color.primary));
                 cardView.setCardBackgroundColor(cardView.getResources().getColor(R.color.surface));
