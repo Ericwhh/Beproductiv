@@ -59,6 +59,7 @@ public class TimerFragment extends Fragment {
     private int retrievedShortBreakMin = 5;
     private int retrievedLongBreakMin = 15;
     private int retrievedFocusMin = 30;
+    private String retrievedStartMode = "start_manually";
     private static final int MILIS_IN_A_SECOND = 1000;
     private static final int SECONDS_IN_A_MIN = 60;
     private static final int SECONDS_IN_AN_HOUR = 3600;
@@ -111,7 +112,6 @@ public class TimerFragment extends Fragment {
         if(timerState == TimerState.Stopped) resetTimerValues();
         updateCircleProgress();
         updateViewTimeRemaining();
-        startTimer();
         addOnClickHandlers();
         updateButtons();
         updateIntervalCheckMarks();
@@ -119,7 +119,10 @@ public class TimerFragment extends Fragment {
         return root;
     }
 
-    private void startTimer(){
+    private void startTimer() {
+        if (timerState == TimerState.Running) return;
+        timerState = TimerState.Running;
+
         circularProgressBar.setProgressMax((int)(timerTime * MagicTimerRatio));
 
         new CountDownTimer(millisRemaining, 50) {
@@ -140,25 +143,26 @@ public class TimerFragment extends Fragment {
             }
 
             public void onFinish() {
-                SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String autoStartInterval = sharedConfig.getString("auto_start_interval", "start_manually");
                 triggerNotification();
                 intervalState = intervalState.next();
-                if (autoStartInterval.equals("start_manually")) {
-                    timerState = TimerState.Paused;
-                }
+
                 if(intervalState == IntervalState.COMPLETED_ALL){
                     timerState = TimerState.Completed;
+                } else {
+                    timerState = TimerState.Stopped;
                 }
-                updateButtons();
-                updateIntervalCheckMarks();
-                resetTimerValues();
-                updateCircleProgress();
-                updateViewTimeRemaining();
 
-                if (autoStartInterval.equals("start_immediately")) {
+
+                resetTimerValues();
+
+                if (timerState != TimerState.Completed && retrievedStartMode.equals("start_immediately")) {
                     startTimer();
                 }
+
+                updateButtons();
+                updateIntervalCheckMarks();
+                updateCircleProgress();
+                updateViewTimeRemaining();
             }
 
             private void triggerNotification() {
@@ -189,6 +193,7 @@ public class TimerFragment extends Fragment {
             retrievedFocusMin = Integer.parseInt(sharedConfig.getString("interval_focus", "30"));
             retrievedLongBreakMin = Integer.parseInt(sharedConfig.getString("interval_long_break", "15"));
             retrievedShortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "5"));
+            retrievedStartMode = sharedConfig.getString("auto_start_interval", "start_manually");
         }
     }
 
@@ -244,7 +249,6 @@ public class TimerFragment extends Fragment {
         startNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timerState = TimerState.Running;
                 if(intervalState == IntervalState.COMPLETED_ALL) intervalState = intervalState.next();
                 updateIntervalCheckMarks();
                 startTimer();
@@ -265,7 +269,6 @@ public class TimerFragment extends Fragment {
         resumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timerState = TimerState.Running;
                 startTimer();
                 updateButtons();
             }
