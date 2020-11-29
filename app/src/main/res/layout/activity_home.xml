@@ -8,17 +8,38 @@
     android:gravity="center_horizontal"
     android:background="@color/background"
     tools:context=".HomeActivity">
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Beproductiv"
+        android:text="@string/app_title"
         style="@style/DefaultTextView"
-        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
         android:textStyle="bold"
         android:textSize="25sp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpenFaq"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:minWidth="35dp"
+        android:minHeight="35dp"
+        app:cornerRadius="10dp"
+        android:layout_marginEnd="35dp"
+        app:icon="@drawable/ic_baseline_info_24"
+        app:iconPadding="0dp"
+        app:iconTint="@color/onBackgroundText"
+        android:layout_marginTop="-10dp"
+        />
+    </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager"
