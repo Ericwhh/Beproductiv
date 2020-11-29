@@ -43,7 +43,10 @@
         <item name="android:clickable">true</item>
         <item name="rippleColor">@color/surfaceRipple</item>
         <item name="android:background">@color/surface</item>
+    </style>
 
+    <style name="PreferenceCard" parent="Card">
+        <item name="android:minHeight">68dp</item>
     </style>
 
     <style name="CardLayout">
