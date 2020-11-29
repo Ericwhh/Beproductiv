@@ -37,11 +37,11 @@
     <string name="to_do">To-Do</string>
     <string name="app_title">Beproductiv</string>
     <string name="faqQuestion1">How does BeProductiv work?</string>
-    <string name="faqAnswer1">Beproductiv was create to help you stay focused and take necessary breaks while working hard. A session consists of 3 focus time periods with two breaks in between one short and one long. You can adjust the duration of these time periods in the settings.</string>
+    <string name="faqAnswer1">Beproductiv was created to help you stay focused and take necessary breaks while working hard. A session consists of three focus time periods with two breaks in between, one short and one long. You can adjust the duration of these time periods in the settings.</string>
     <string name="faqQuestion2">Should I select a to-do?</string>
     <string name="faqAnswer2">Selecting a to-do item is not necessary to make use of the app. You can keep a backlog of tasks for your reference so you have specific goals in mind while working hard.</string>
     <string name="faqQuestion3">How to edit or delete a to-do?</string>
-    <string name="faqAnswer3">Navigate to the to-do tab of the app. Tap the to-do item you want to modify. Click the pencil edit button. Make your desired changes or delete the to-do item by taping the red garbage can.</string>
+    <string name="faqAnswer3">Navigate to the to-do tab of the app. Tap the to-do item you want to modify. Click the pencil edit button. Make your desired changes or delete the to-do item by tapping the red garbage can.</string>
     <string name="faqQuestion4">Who made this awesome app?</string>
-    <string name="faqAnswer4">This app was created by three BCIT students:  Eric Huang, Andrey Goryelov and Noah MacRitchie.</string>
+    <string name="faqAnswer4">This app was created by three BCIT students: Eric Huang, Andrey Goryelov, and Noah MacRitchie.</string>
 </resources>
