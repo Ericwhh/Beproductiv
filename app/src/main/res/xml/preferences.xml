@@ -1,14 +1,4 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory app:title="@string/about_me_header"
-        app:iconSpaceReserved="false">
-        <EditTextPreference
-            app:layout="@layout/preference_card_default"
-            app:key="username"
-            app:title="@string/username_title"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="false" />
-    </PreferenceCategory>
-
     <PreferenceCategory app:title="@string/intervals_header"
         app:allowDividerAbove="false"
         app:iconSpaceReserved="false" >
@@ -58,10 +48,17 @@
             app:iconSpaceReserved="false" />
 
         <SwitchPreference
-            app:layout="@layout/preference_card_switch_bottom"
+            app:layout="@layout/preference_card_switch_middle"
             app:defaultValue="true"
             app:title="@string/other_notifications"
             app:key="notifications"
+            app:iconSpaceReserved="false" />
+
+        <SwitchPreference
+            app:layout="@layout/preference_card_switch_bottom"
+            app:defaultValue="false"
+            app:title="@string/other_show_completed"
+            app:key="show_completed"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>

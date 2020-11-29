@@ -41,6 +41,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.XMLFormatter;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
+import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
 import ca.bcit.beproductiv.Database.TimerData;
 import ca.bcit.beproductiv.Database.TimerDataDao;
 import ca.bcit.beproductiv.Database.TodoItem;
@@ -216,14 +217,23 @@ public class TimerFragment extends Fragment {
             @Override
             public void onChanged(Integer integer) {
                 AppDatabase db = AppDatabase.getInstance(getContext());
-                TodoItem selectedTask = db.getTaskDao().findByUID(integer);
+                LiveData<TodoItem> selectedTask = db.getTaskDao().findByUIDLiveData(integer);
+
                 if(integer != -1 && selectedTask != null) {
-                    System.out.println("Selected UID: " + integer + "task name " + selectedTask.name);
-                    selectedTaskName.setText(selectedTask.name);
-                    selectedTaskDesc.setText(selectedTask.description);
-                    selectedTaskCardView.setOnClickListener(null);
-                    selectAClassText.setVisibility(View.GONE);
-                    selectedTaskLayout.setVisibility(View.VISIBLE);
+                    selectedTask.observe(getViewLifecycleOwner(), new Observer<TodoItem>() {
+                        @Override
+                        public void onChanged(TodoItem todoItem) {
+                            if (todoItem.isComplete) {
+                                new SetTimerTodoAsync(getContext()).execute(-1);
+                            }
+                            System.out.println("Selected UID: " + integer + "task name " + todoItem.name);
+                            selectedTaskName.setText(todoItem.name);
+                            selectedTaskDesc.setText(todoItem.description);
+                            selectedTaskCardView.setOnClickListener(null);
+                            selectAClassText.setVisibility(View.GONE);
+                            selectedTaskLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
                 } else {
                     selectedTaskLayout.setVisibility(View.GONE);
                     selectAClassText.setVisibility(View.VISIBLE);

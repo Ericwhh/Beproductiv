@@ -23,12 +23,16 @@
     <string name="other_header">Other</string>
     <string name="other_auto_start_intervals">Auto-start intervals</string>
     <string name="other_notifications">Enable notifications</string>
+    <string name="other_show_completed">Show completed to-dos</string>
 
     <string name="start">Start</string>
     <string name="resume">Resume</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
 
-    <string name="label_select_task">Select Task</string>
+    <string name="label_select_task">Select</string>
     <string name="choose_a_task">Select a task</string>
+    <string name="label_complete">Complete</string>
+    <string name="completed">Completed</string>
+    <string name="to_do">To-Do</string>
 </resources>

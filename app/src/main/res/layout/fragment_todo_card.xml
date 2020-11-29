@@ -9,11 +9,32 @@
     <RelativeLayout
         style="@style/CardLayout"
         android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:animateLayoutChanges="true">
         <RelativeLayout
             android:id="@+id/layoutTop"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:layout_marginTop="-10dp"
+            >
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:minWidth="35dp"
+                android:minHeight="35dp"
+                app:cornerRadius="10dp"
+                android:layout_marginEnd="35dp"
+                app:icon="@drawable/ic_baseline_edit_24"
+                app:iconPadding="0dp"
+                app:iconTint="@color/onBackgroundText"
+                android:layout_marginTop="-10dp"
+                />
             <ImageView
                 android:id="@+id/imageViewExpandCollapse"
                 android:layout_width="wrap_content"
@@ -22,12 +43,19 @@
                 android:layout_alignParentTop="true"
                 android:minWidth="35dp"
                 android:minHeight="35dp"
-                android:src="@drawable/ic_baseline_expand_more_24" />
+                android:src="@drawable/ic_baseline_expand_more_24"
+                android:layout_marginTop="-5dp"
+                />
+            <TextView
+                android:id="@+id/todoCompletionStatus"
+                style="@style/CardHeader"
+                tool:text="Completed"
+                />
             <TextView
                 android:id="@+id/todo_name"
                 style="@style/CardHeader"
-                android:layout_marginEnd="35dp"
-                android:layout_centerVertical="true"
+                android:layout_below="@id/todoCompletionStatus"
+                android:layout_marginTop="8dp"
                 tool:text="Hello"
                 />
         </RelativeLayout>
@@ -50,6 +78,7 @@
             android:layout_marginTop="16dp"
             android:layout_below="@+id/layoutMiddle">
             <LinearLayout
+                android:id="@+id/todoButtonRow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -58,23 +87,29 @@
                     android:id="@+id/btnStartTimer"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/primary"
                     android:textAllCaps="true"
-                    app:cornerRadius="10dp"
+                    android:textColor="@color/surface"
                     android:textFontWeight="600"
                     android:text="@string/label_select_task" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEditItem"
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    app:cornerRadius="10dp"
-                    app:icon="@drawable/ic_baseline_edit_24"
-                    app:iconGravity="textStart"
-                    app:iconPadding="0dp"
-                    app:iconTint="@color/onBackgroundText" />
+                    style="@style/ButtonPrimary"
+                    android:id="@+id/btnCompleteTodo"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:textColor="@color/primary"
+                    android:backgroundTint="@color/background"
+                    app:strokeColor="@color/background"
+                    android:textAllCaps="true"
+                    android:textFontWeight="600"
+                    android:text="@string/label_complete" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
