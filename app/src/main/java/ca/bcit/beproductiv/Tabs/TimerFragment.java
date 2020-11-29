@@ -388,7 +388,11 @@ public class TimerFragment extends Fragment {
         long hours = secondsUntilFinished / SECONDS_IN_AN_HOUR;
         long minutes = (secondsUntilFinished % SECONDS_IN_AN_HOUR) / SECONDS_IN_A_MIN;
         long secs = secondsUntilFinished % SECONDS_IN_A_MIN;
-        String time = String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
-        return time;
+        if (hours > 1){
+            return String.format(Locale.getDefault(),"%d:%02d:%02d", hours, minutes, secs);
+        }
+        else {
+            return String.format(Locale.getDefault(),"%02d:%02d", minutes, secs);
+        }
     }
 }
