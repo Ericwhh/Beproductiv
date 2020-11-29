@@ -2,14 +2,9 @@
 
 package ca.bcit.beproductiv.Tabs;
 
-import android.app.Service;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -17,32 +12,22 @@ import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
-import java.lang.ref.WeakReference;
-import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.XMLFormatter;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
-import ca.bcit.beproductiv.Database.TimerData;
 import ca.bcit.beproductiv.Database.TimerDataDao;
 import ca.bcit.beproductiv.Database.TodoItem;
 import ca.bcit.beproductiv.IntervalState;
@@ -57,9 +42,9 @@ public class TimerFragment extends Fragment {
     private CircularProgressBar circularProgressBar;
     private int timerTime;
     private long millisRemaining;
-    private int retrievedShortBreakMin = 5;
-    private int retrievedLongBreakMin = 15;
-    private int retrievedFocusMin = 30;
+    private int retrievedShortBreakSec;
+    private int retrievedLongBreakSec;
+    private int retrievedFocusSec;
     private String retrievedStartMode = "start_manually";
     private static final int MILIS_IN_A_SECOND = 1000;
     private static final int SECONDS_IN_A_MIN = 60;
@@ -207,21 +192,21 @@ public class TimerFragment extends Fragment {
         SharedPreferences sharedConfig = PreferenceManager.getDefaultSharedPreferences(root.getContext());
 
         if(timerState == TimerState.Stopped) {
-            retrievedFocusMin = Integer.parseInt(sharedConfig.getString("interval_focus", "30"));
-            retrievedLongBreakMin = Integer.parseInt(sharedConfig.getString("interval_long_break", "15"));
-            retrievedShortBreakMin = Integer.parseInt(sharedConfig.getString("interval_break", "5"));
-            retrievedStartMode = sharedConfig.getString("auto_start_interval", "start_manually");
+            retrievedFocusSec = Integer.parseInt(sharedConfig.getString("interval_focus", "1200"));
+            retrievedLongBreakSec = Integer.parseInt(sharedConfig.getString("interval_long_break", "300"));
+            retrievedShortBreakSec = Integer.parseInt(sharedConfig.getString("interval_break", "600"));
+            retrievedStartMode = sharedConfig.getString("auto_start_interval", "start_immediately");
         }
     }
 
     private void resetTimerValues(){
         setTimerIntervals();
-        timerTime = retrievedFocusMin * MILIS_IN_A_SECOND;
+        timerTime = retrievedFocusSec * MILIS_IN_A_SECOND;
         if(intervalState.isBreak()) {
             if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakMin * MILIS_IN_A_SECOND;
+                 timerTime = retrievedShortBreakSec * MILIS_IN_A_SECOND;
             } else {
-                timerTime = retrievedLongBreakMin * MILIS_IN_A_SECOND;
+                timerTime = retrievedLongBreakSec * MILIS_IN_A_SECOND;
             }
         }
         millisRemaining = timerTime;
