@@ -37,7 +37,7 @@
             app:layout="@layout/preference_card_bottom"
             app:entries="@array/auto_start_interval_entries"
             app:entryValues="@array/auto_start_interval_values"
-            app:defaultValue="start_immediately"
+            app:defaultValue="start_manually"
             app:key="auto_start_interval"
             app:title="@string/other_auto_start_intervals"
             app:useSimpleSummaryProvider="true"
