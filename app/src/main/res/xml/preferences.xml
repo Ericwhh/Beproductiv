@@ -4,7 +4,7 @@
         app:iconSpaceReserved="false" >
         <ListPreference
             app:layout="@layout/preference_card_top"
-            app:defaultValue="30"
+            app:defaultValue="1200"
             app:entries="@array/interval_focus_entries"
             app:entryValues="@array/interval_focus_values"
             app:key="interval_focus"
@@ -15,7 +15,7 @@
 
         <ListPreference
             app:layout="@layout/preference_card_middle"
-            app:defaultValue="5"
+            app:defaultValue="300"
             app:entries="@array/interval_break_entries"
             app:entryValues="@array/interval_break_values"
             app:key="interval_break"
@@ -25,7 +25,7 @@
 
         <ListPreference
             app:layout="@layout/preference_card_bottom"
-            app:defaultValue="15"
+            app:defaultValue="600"
             app:entries="@array/interval_long_break_entries"
             app:entryValues="@array/interval_long_break_values"
             app:key="interval_long_break"
@@ -42,6 +42,7 @@
             app:layout="@layout/preference_card_top"
             app:entries="@array/auto_start_interval_entries"
             app:entryValues="@array/auto_start_interval_values"
+            app:defaultValue="start_immediately"
             app:key="auto_start_interval"
             app:title="@string/other_auto_start_intervals"
             app:useSimpleSummaryProvider="true"
