@@ -39,7 +39,14 @@ public class HomeActivity extends AppCompatActivity {
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         ViewPager pager = findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
-
+        Button settingsButton = findViewById(R.id.btnOpenFaq);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, FaqActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        Button settingsButton = findViewById(R.id.settingsButton);
 //        settingsButton.setOnClickListener(new View.OnClickListener() {
