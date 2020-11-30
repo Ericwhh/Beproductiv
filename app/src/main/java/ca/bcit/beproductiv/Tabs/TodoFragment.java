@@ -1,12 +1,8 @@
 package ca.bcit.beproductiv.Tabs;
 
-import android.app.Application;
-import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.button.MaterialButton;
@@ -14,53 +10,34 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.transition.AutoTransition;
-import androidx.transition.Fade;
 import androidx.transition.TransitionManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
-import ca.bcit.beproductiv.Database.Async.GetTodoItemsAsync;
-import ca.bcit.beproductiv.Database.Async.RemoveTodoItemsAsync;
 import ca.bcit.beproductiv.Database.Async.SetTimerTodoAsync;
 import ca.bcit.beproductiv.Database.Async.UpdateTodoItemsAsync;
 import ca.bcit.beproductiv.Database.TodoItem;
-import ca.bcit.beproductiv.HomeActivity;
 import ca.bcit.beproductiv.R;
 import ca.bcit.beproductiv.TodoItemForm;
 
@@ -96,24 +73,16 @@ public class TodoFragment extends Fragment {
         todoCardsAdapter = new TodoCardsAdapter(new ArrayList<>(), contRecycler, viewPager);
         contRecycler.setAdapter(todoCardsAdapter);
         contRecycler.setItemAnimator(null);
-        myTodoItems.observe(getViewLifecycleOwner(), new Observer<List<TodoItem>>() {
-            @Override
-            public void onChanged(List<TodoItem> todoItems) {
-                updateTodoAdapter(todoItems);
-            }
-        });
+        myTodoItems.observe(getViewLifecycleOwner(), this::updateTodoAdapter);
 
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         contRecycler.setLayoutManager(lm);
 
         FloatingActionButton button = root.findViewById(R.id.fab);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), TodoItemForm.class);
-                i.putExtra("FORM_ACTION", "ADD");
-                view.getContext().startActivity(i);
-            }
+        button.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), TodoItemForm.class);
+            i.putExtra("FORM_ACTION", "ADD");
+            view.getContext().startActivity(i);
         });
 
         return root;
@@ -248,46 +217,33 @@ public class TodoFragment extends Fragment {
 
             holder.imageViewExpandCollapse.setImageDrawable(expandCollapseIcon);
 
-            holder.btnContextMenu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(cardView.getContext(), TodoItemForm.class);
-                    i.putExtra("FORM_ACTION", "EDIT");
+            holder.btnContextMenu.setOnClickListener(v -> {
+                Intent i = new Intent(cardView.getContext(), TodoItemForm.class);
+                i.putExtra("FORM_ACTION", "EDIT");
 
-                    // TODO: Send only uid instead of plaintext name and description
-                    i.putExtra("TODO_UID", todoItem.uid);
-                    i.putExtra("TODO_NAME", todoItem.name);
-                    i.putExtra("TODO_DESCRIPTION", todoItem.description);
-                    i.putExtra("TODO_COMPLETE", todoItem.isComplete);
+                i.putExtra("TODO_UID", todoItem.uid);
+                i.putExtra("TODO_NAME", todoItem.name);
+                i.putExtra("TODO_DESCRIPTION", todoItem.description);
+                i.putExtra("TODO_COMPLETE", todoItem.isComplete);
 
-                    cardView.getContext().startActivity(i);
-                }
+                cardView.getContext().startActivity(i);
             });
 
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    _expandedPosition = isExpanded ? -1 : position;
-                    TransitionManager.beginDelayedTransition(_rootRecyclerView);
-                    notifyDataSetChanged();
-                }
+            cardView.setOnClickListener(view -> {
+                _expandedPosition = isExpanded ? -1 : position;
+                TransitionManager.beginDelayedTransition(_rootRecyclerView);
+                notifyDataSetChanged();
             });
 
-            holder.btnStartTimer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    new SetTimerTodoAsync(holder.cardView.getContext()).execute(todoItem.uid);
-                    _viewPager.setCurrentItem(0);
-                }
+            holder.btnStartTimer.setOnClickListener(view -> {
+                new SetTimerTodoAsync(holder.cardView.getContext()).execute(todoItem.uid);
+                _viewPager.setCurrentItem(0);
             });
 
-            holder.btnCompleteTodo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    todoItem.isComplete = true;
-                    new UpdateTodoItemsAsync(holder.cardView.getContext()).execute(todoItem);
-                    notifyDataSetChanged();
-                }
+            holder.btnCompleteTodo.setOnClickListener(v -> {
+                todoItem.isComplete = true;
+                new UpdateTodoItemsAsync(holder.cardView.getContext()).execute(todoItem);
+                notifyDataSetChanged();
             });
         }
     }

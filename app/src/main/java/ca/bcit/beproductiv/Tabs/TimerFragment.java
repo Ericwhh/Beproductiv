@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -46,7 +45,7 @@ public class TimerFragment extends Fragment {
     private int retrievedLongBreakSec;
     private int retrievedFocusSec;
     private String retrievedStartMode = "start_manually";
-    private static final int MILIS_IN_A_SECOND = 1000;
+    private static final int MILLIS_IN_A_SECOND = 1000;
     private static final int SECONDS_IN_A_MIN = 60;
     private static final int SECONDS_IN_AN_HOUR = 3600;
     private static final double MagicTimerRatio = 4.0/3;
@@ -178,11 +177,11 @@ public class TimerFragment extends Fragment {
 
     private void updateFocusOrBreak() {
         if (intervalState.isBreak()) {
-            focusOrBreakView.setText("Break");
+            focusOrBreakView.setText(R.string.label_break);
             focusOrBreakView.setTextColor(getResources().getColor(R.color.intervalIncomplete));
         }
         else {
-            focusOrBreakView.setText("Focus");
+            focusOrBreakView.setText(R.string.label_focus);
             focusOrBreakView.setTextColor(getResources().getColor(R.color.primary));
         }
         focusOrBreakView.setAlpha(0.8f);
@@ -201,12 +200,12 @@ public class TimerFragment extends Fragment {
 
     private void resetTimerValues(){
         setTimerIntervals();
-        timerTime = retrievedFocusSec * MILIS_IN_A_SECOND;
+        timerTime = retrievedFocusSec * MILLIS_IN_A_SECOND;
         if(intervalState.isBreak()) {
             if(intervalState == IntervalState.BREAK_ONE){
-                 timerTime = retrievedShortBreakSec * MILIS_IN_A_SECOND;
+                 timerTime = retrievedShortBreakSec * MILLIS_IN_A_SECOND;
             } else {
-                timerTime = retrievedLongBreakSec * MILIS_IN_A_SECOND;
+                timerTime = retrievedLongBreakSec * MILLIS_IN_A_SECOND;
             }
         }
         millisRemaining = timerTime;
@@ -214,90 +213,62 @@ public class TimerFragment extends Fragment {
     }
     private void setUpSelectedTaskHandlers() {
         final TimerDataDao timerDataDao = appDatabase.getTimerDataDao();
-        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                AppDatabase db = AppDatabase.getInstance(getContext());
-                LiveData<TodoItem> selectedTask = db.getTaskDao().findByUIDLiveData(integer);
+        timerDataDao.getTodoItemUID().observe(getViewLifecycleOwner(), integer -> {
+            AppDatabase db = AppDatabase.getInstance(getContext());
+            LiveData<TodoItem> selectedTask = db.getTaskDao().findByUIDLiveData(integer);
 
-                if(integer != -1 && selectedTask != null) {
-                    selectedTask.observe(getViewLifecycleOwner(), new Observer<TodoItem>() {
-                        @Override
-                        public void onChanged(TodoItem todoItem) {
-                            if (todoItem == null || todoItem.isComplete) {
-                                new SetTimerTodoAsync(getContext()).execute(-1);
-                                return;
-                            }
-                            selectedTaskName.setText(todoItem.name);
-                            selectedTaskDesc.setText(todoItem.description);
-                            selectedTaskCardView.setOnClickListener(null);
-                            selectAClassText.setVisibility(View.GONE);
-                            selectedTaskLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
-                } else {
-                    selectedTaskLayout.setVisibility(View.GONE);
-                    selectAClassText.setVisibility(View.VISIBLE);
-                    selectedTaskCardView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            viewPager.setCurrentItem(1);
-                        }
-                    });
-                }
+            if(integer != -1 && selectedTask != null) {
+                selectedTask.observe(getViewLifecycleOwner(), todoItem -> {
+                    if (todoItem == null || todoItem.isComplete) {
+                        new SetTimerTodoAsync(getContext()).execute(-1);
+                        return;
+                    }
+                    selectedTaskName.setText(todoItem.name);
+                    selectedTaskDesc.setText(todoItem.description);
+                    selectedTaskCardView.setOnClickListener(null);
+                    selectAClassText.setVisibility(View.GONE);
+                    selectedTaskLayout.setVisibility(View.VISIBLE);
+                });
+            } else {
+                selectedTaskLayout.setVisibility(View.GONE);
+                selectAClassText.setVisibility(View.VISIBLE);
+                selectedTaskCardView.setOnClickListener(v -> viewPager.setCurrentItem(1));
             }
         });
-        removeSelectedTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timerDataDao.setTodoItemUID(-1);
-            }
-        });
+        removeSelectedTaskButton.setOnClickListener(view -> timerDataDao.setTodoItemUID(-1));
     }
 
     private void addOnClickHandlers() {
         Button startNowButton = root.findViewById(R.id.startButton);
-        startNowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(intervalState == IntervalState.COMPLETED_ALL) intervalState = intervalState.next();
-                updateIntervalCheckMarks();
-                startTimer();
-                updateButtons();
+        startNowButton.setOnClickListener(v -> {
+            if(intervalState == IntervalState.COMPLETED_ALL) intervalState = intervalState.next();
+            updateIntervalCheckMarks();
+            startTimer();
+            updateButtons();
 
-            }
         });
         Button pauseButton = root.findViewById(R.id.pauseButton);
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timerState = TimerState.Paused;
-                updateButtons();
-            }
+        pauseButton.setOnClickListener(v -> {
+            timerState = TimerState.Paused;
+            updateButtons();
         });
 
         Button resumeButton = root.findViewById(R.id.resumeButton);
-        resumeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTimer();
-                updateButtons();
-            }
+        resumeButton.setOnClickListener(v -> {
+            startTimer();
+            updateButtons();
         });
 
         Button stopButton = root.findViewById(R.id.stopButton);
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timerState = TimerState.Stopped;
-                intervalState = IntervalState.INTERVAL_ONE;
-                updateFocusOrBreak();
-                updateIntervalCheckMarks();
-                resetTimerValues();
-                updateCircleProgress();
-                updateViewTimeRemaining();
-                updateButtons();
-            }
+        stopButton.setOnClickListener(v -> {
+            timerState = TimerState.Stopped;
+            intervalState = IntervalState.INTERVAL_ONE;
+            updateFocusOrBreak();
+            updateIntervalCheckMarks();
+            resetTimerValues();
+            updateCircleProgress();
+            updateViewTimeRemaining();
+            updateButtons();
         });
     }
 
@@ -379,7 +350,7 @@ public class TimerFragment extends Fragment {
     }
 
     public static String timeToHumanReadableString(long milliseconds) {
-        long secondsUntilFinished =  milliseconds / MILIS_IN_A_SECOND;
+        long secondsUntilFinished =  milliseconds / MILLIS_IN_A_SECOND;
         long hours = secondsUntilFinished / SECONDS_IN_AN_HOUR;
         long minutes = (secondsUntilFinished % SECONDS_IN_AN_HOUR) / SECONDS_IN_A_MIN;
         long secs = secondsUntilFinished % SECONDS_IN_A_MIN;

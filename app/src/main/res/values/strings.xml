@@ -44,4 +44,8 @@
     <string name="faqAnswer3">Navigate to the to-do tab of the app. Tap the to-do item you want to modify. Click the pencil edit button. Make your desired changes or delete the to-do item by tapping the red garbage can.</string>
     <string name="faqQuestion4">Who made this awesome app?</string>
     <string name="faqAnswer4">This app was created by three BCIT students: Eric Huang, Andrey Goryelov, and Noah MacRitchie.</string>
+    <string name="label_add_todo">Add Todo</string>
+    <string name="label_edit_todo">Edit Todo</string>
+    <string name="label_break">Break</string>
+    <string name="label_focus">Focus</string>
 </resources>

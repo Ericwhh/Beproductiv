@@ -11,8 +11,6 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import ca.bcit.beproductiv.Tabs.TimerFragment;
-
 public class TimerNotification {
     public enum NotificationType {
         SHORT_BREAK(1),

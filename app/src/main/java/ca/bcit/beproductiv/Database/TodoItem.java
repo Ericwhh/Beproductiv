@@ -14,10 +14,10 @@ public class TodoItem {
     public int uid;
 
     @ColumnInfo(name = "todo_item_name")
-    public String name;
+    public final String name;
 
     @ColumnInfo(name = "todo_item_description")
-    public String description;
+    public final String description;
 
     @ColumnInfo(name = "todo_item_is_complete")
     public boolean isComplete;
@@ -37,19 +37,6 @@ public class TodoItem {
 
     public void setUID(int uid) {
         this.uid = uid;
-    }
-
-    public static TodoItem[] dummyItems = {
-            new TodoItem("Fight a bear", "Fight a bear next Tuesday together with Albert"),
-            new TodoItem("Swim in ocean", "Swim with the fishes"),
-            new TodoItem("Get a six pack", "Push enough rocks to get a six pack")
-
-    };
-
-    public static ArrayList<TodoItem> getDummyData() {
-        ArrayList<TodoItem> items = new ArrayList<>();
-        Collections.addAll(items, dummyItems);
-        return items;
     }
 
     public boolean getIsComplete() {
