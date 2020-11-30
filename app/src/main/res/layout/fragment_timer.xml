@@ -58,14 +58,12 @@
                             android:id="@+id/todo_name"
                             style="@style/CardHeader"
                             android:maxLines="1"
-                            android:text="Hello"
-                            tool:text="Hello" />
+                            tool:text="Header" />
                         <TextView
                             android:id="@+id/todo_description"
-                            android:text="World\nWorld"
                             android:maxLines="1"
                             style="@style/CardSubHeader"
-                            tool:text="World\nWorld" />
+                            tool:text="Description" />
 
                     </LinearLayout>
 

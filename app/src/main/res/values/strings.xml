@@ -49,4 +49,9 @@
     <string name="label_break">Break</string>
     <string name="label_focus">Focus</string>
     <string name="label_form_toast">Enter to-do name and description</string>
+    <string name="faqHeader">FAQ</string>
+    <string name="add_todo">Add Todo</string>
+    <string name="name_text">Name</string>
+    <string name="description_text">Description</string>
+    <string name="save_button_text">Save</string>
 </resources>

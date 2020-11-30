@@ -31,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Add Todo"
+            android:text="@string/add_todo"
             style="@style/DefaultTextView"
             android:textSize="25sp"/>
 
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="Name"
+            android:text="@string/name_text"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:text="Description"
+            android:text="@string/description_text"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +107,7 @@
             style="@style/ButtonPrimary"
             android:layout_gravity="center_horizontal"
             android:textFontWeight="600"
-            android:text="Save" />
+            android:text="@string/save_button_text" />
 
     </LinearLayout>
 
