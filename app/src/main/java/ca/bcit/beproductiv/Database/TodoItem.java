@@ -2,6 +2,7 @@ package ca.bcit.beproductiv.Database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -25,6 +26,13 @@ public class TodoItem {
         this.name = name;
         this.description = description;
         this.isComplete = false;
+    }
+
+    @Ignore
+    public TodoItem(String name, String description, boolean isComplete) {
+        this.name = name;
+        this.description = description;
+        this.isComplete = isComplete;
     }
 
     public void setUID(int uid) {

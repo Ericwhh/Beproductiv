@@ -21,6 +21,7 @@ public class TodoItemForm extends AppCompatActivity {
     int todoUID = DEFAULT_TODO_UID;
     String todoName = "";
     String todoDescription = "";
+    boolean todoComplete = false;
 
     Button btnSaveTodo;
     Button btnDeleteTodo;
@@ -55,9 +56,11 @@ public class TodoItemForm extends AppCompatActivity {
         if (FORM_ACTION == FormAction.Edit) {
             tvFormHeading.setText(R.string.label_edit_todo);
 
-            todoUID = getIntent().getIntExtra("TODO_UID", DEFAULT_TODO_UID);
-            todoName = getIntent().getStringExtra("TODO_NAME");
-            todoDescription = getIntent().getStringExtra("TODO_DESCRIPTION");
+            Intent i = getIntent();
+            todoUID = i.getIntExtra("TODO_UID", DEFAULT_TODO_UID);
+            todoName = i.getStringExtra("TODO_NAME");
+            todoDescription = i.getStringExtra("TODO_DESCRIPTION");
+            todoComplete = i.getBooleanExtra("TODO_COMPLETE", false);
         } else {
             tvFormHeading.setText(R.string.label_add_todo);
 
@@ -71,9 +74,13 @@ public class TodoItemForm extends AppCompatActivity {
             String todoName = etTodoName.getText().toString();
             String todoDescription = etTodoDescription.getText().toString();
 
-            if (todoName.trim().isEmpty() || todoDescription.trim().isEmpty()) return;
+                if (todoName.trim().isEmpty() || todoDescription.trim().isEmpty()) {
+                    Toast.makeText(getBaseContext(), "Enter to-do name and description",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
 
-            TodoItem item = new TodoItem(todoName, todoDescription);
+                TodoItem item = new TodoItem(todoName, todoDescription, todoComplete);
 
             if (FORM_ACTION == FormAction.Add) {
                 new AddTodoItemsAsync(getApplicationContext()).execute(item);

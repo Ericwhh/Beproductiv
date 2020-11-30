@@ -224,6 +224,7 @@ public class TodoFragment extends Fragment {
                 i.putExtra("TODO_UID", todoItem.uid);
                 i.putExtra("TODO_NAME", todoItem.name);
                 i.putExtra("TODO_DESCRIPTION", todoItem.description);
+                i.putExtra("TODO_COMPLETE", todoItem.isComplete);
 
                 cardView.getContext().startActivity(i);
             });
