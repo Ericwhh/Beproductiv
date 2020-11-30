@@ -191,6 +191,12 @@
                     </LinearLayout>
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSkip30"
+                android:layout_marginTop="100dp"
+                android:text="Skip 30s"/>
         </LinearLayout>
     </FrameLayout>
 </ScrollView>

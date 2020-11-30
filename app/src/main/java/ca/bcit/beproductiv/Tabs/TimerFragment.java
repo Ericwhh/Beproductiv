@@ -299,6 +299,18 @@ public class TimerFragment extends Fragment {
                 updateButtons();
             }
         });
+
+        Button skipButton = root.findViewById(R.id.btnSkip30);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (timerState == TimerState.Paused) {
+                    millisRemaining -= (30 * MILIS_IN_A_SECOND);
+                    updateCircleProgress();
+                    updateViewTimeRemaining();
+                }
+            }
+        });
     }
 
     private void updateIntervalCheckMarks(){
