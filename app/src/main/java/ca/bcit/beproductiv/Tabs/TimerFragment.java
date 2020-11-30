@@ -224,10 +224,10 @@ public class TimerFragment extends Fragment {
                     selectedTask.observe(getViewLifecycleOwner(), new Observer<TodoItem>() {
                         @Override
                         public void onChanged(TodoItem todoItem) {
-                            if (todoItem.isComplete) {
+                            if (todoItem == null || todoItem.isComplete) {
                                 new SetTimerTodoAsync(getContext()).execute(-1);
+                                return;
                             }
-                            System.out.println("Selected UID: " + integer + "task name " + todoItem.name);
                             selectedTaskName.setText(todoItem.name);
                             selectedTaskDesc.setText(todoItem.description);
                             selectedTaskCardView.setOnClickListener(null);
