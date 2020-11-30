@@ -77,7 +77,7 @@ public class TodoItemForm extends AppCompatActivity {
             String todoDescription = etTodoDescription.getText().toString();
 
                 if (todoName.trim().isEmpty() || todoDescription.trim().isEmpty()) {
-                    Toast.makeText(getBaseContext(), "Enter to-do name and description",
+                    Toast.makeText(getBaseContext(), R.string.label_form_toast,
                             Toast.LENGTH_LONG).show();
                     return;
                 }
