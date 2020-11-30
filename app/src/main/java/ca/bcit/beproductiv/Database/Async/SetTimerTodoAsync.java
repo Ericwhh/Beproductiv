@@ -7,8 +7,6 @@ import java.lang.ref.WeakReference;
 
 import ca.bcit.beproductiv.Database.AppDatabase;
 import ca.bcit.beproductiv.Database.TimerDataDao;
-import ca.bcit.beproductiv.Database.TodoItem;
-import ca.bcit.beproductiv.Database.TodoItemDao;
 
 public class SetTimerTodoAsync extends AsyncTask<Integer, Void, Integer> {
     private final WeakReference<Context> contextRef;
